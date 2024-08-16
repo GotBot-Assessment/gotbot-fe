@@ -4,6 +4,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding, withHashLocation, withViewTransitions } from '@angular/router';
 
 import { routes } from '@gotbot-chef/app.routes';
+import { urlAdjusterInterceptor } from '@gotbot-chef/shared/interceptors/url-adjuster.interceptors';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 export const appConfig: ApplicationConfig = {
@@ -18,7 +19,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(
       withFetch(),
-      withInterceptors([])
+      withInterceptors([
+        urlAdjusterInterceptor
+      ])
     ),
     importProvidersFrom(ModalModule.forRoot())
   ]
