@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { scrollToError } from '@gotbot-chef/shared/helpers/scroll-helper';
 import { validateAllFormFields } from '@gotbot-chef/shared/helpers/validators';
@@ -14,7 +15,10 @@ import { finalize, switchMap, takeUntil, tap } from 'rxjs';
 @Component({
   selector: 'gotbot-chef-login',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink
+  ],
   templateUrl: './login.component.html',
   styles: ``
 })
