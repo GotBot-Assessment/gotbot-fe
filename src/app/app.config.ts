@@ -10,6 +10,7 @@ import { urlAdjusterInterceptor } from '@gotbot-chef/shared/interceptors/url-adj
 import { LocalStorageService } from '@gotbot-chef/shared/services/storage/local-storage.service';
 import { StorageService } from '@gotbot-chef/shared/services/storage/storage.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
         unprocessableEntityInterceptor
       ])
     ),
+    provideToastr(),
     importProvidersFrom(ModalModule.forRoot()),
     {
       provide: StorageService,

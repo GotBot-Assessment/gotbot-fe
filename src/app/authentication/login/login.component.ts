@@ -5,6 +5,7 @@ import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-obs
 import { scrollToError } from '@gotbot-chef/shared/helpers/scroll-helper';
 import { validateAllFormFields } from '@gotbot-chef/shared/helpers/validators';
 import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
+import { ToastrService } from 'ngx-toastr';
 import { finalize, takeUntil } from 'rxjs';
 
 @Component({
@@ -21,6 +22,7 @@ export class LoginComponent extends HasObservablesDirective {
   });
   private readonly loadingStateService = inject(LoadingStateService);
   private readonly httpClient = inject(HttpClient);
+  private readonly toastr = inject(ToastrService);
 
   public login(): void {
     if (this.loginForm.invalid) {
@@ -34,6 +36,14 @@ export class LoginComponent extends HasObservablesDirective {
       .pipe(
         finalize(() => this.loadingStateService.end('processing')),
         takeUntil(this.destroy$)
-      ).subscribe();
+      )
+      .subscribe({
+        next: () => window.location.reload(),
+        error: (err) => {
+          this.loginForm.controls.password.setValue(null);
+
+          return this.toastr.error(err.message ?? 'Invalid credentials', 'Login failed');
+        }
+      });
   }
 }
