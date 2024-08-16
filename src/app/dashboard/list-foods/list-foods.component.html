@@ -1,4 +1,4 @@
-@if(!paginatedFoods()?.data?.length){
+@if (!paginatedFoods()?.data?.length) {
   <div class="alert alert-danger" role="alert">
     No meals available at the moment.
   </div>
@@ -11,9 +11,9 @@
         <h6 class="mb-1">Foods (Meals)</h6>
         <p class="text-sm">
           Food prepared at GotBot Chef (
-          {{ (((paginatedFoods()?.meta?.current_page ?? 1) - 1) * (paginatedFoods()?.meta?.per_page ?? 1)) + 1 }}
+          {{ paginatedFoods()?.meta?.from }}
           -
-          {{ (paginatedFoods()?.meta?.per_page ?? 1) * (paginatedFoods()?.meta?.current_page ?? 1) }}
+          {{ paginatedFoods()?.meta?.to }}
           of {{ paginatedFoods()?.meta?.total ?? 0 }} )
         </p>
       </div>
@@ -23,7 +23,8 @@
             <div class="card card-blog card-plain">
               <div class="position-relative">
                 <a class="d-block shadow-xl border-radius-xl">
-                  <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                  <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow"
+                       class="img-fluid shadow border-radius-xl">
                 </a>
               </div>
               <div class="card-body px-1 pb-0">
@@ -39,16 +40,20 @@
                 <div class="d-flex align-items-center justify-content-between">
                   <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                   <div class="avatar-group mt-2">
-                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
+                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip"
+                       data-bs-placement="bottom" title="Elena Morison">
                       <img alt="Image placeholder" src="../assets/img/team-1.jpg">
                     </a>
-                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
+                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip"
+                       data-bs-placement="bottom" title="Ryan Milly">
                       <img alt="Image placeholder" src="../assets/img/team-2.jpg">
                     </a>
-                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
+                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip"
+                       data-bs-placement="bottom" title="Nick Daniel">
                       <img alt="Image placeholder" src="../assets/img/team-3.jpg">
                     </a>
-                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
+                    <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip"
+                       data-bs-placement="bottom" title="Peterson">
                       <img alt="Image placeholder" src="../assets/img/team-4.jpg">
                     </a>
                   </div>
