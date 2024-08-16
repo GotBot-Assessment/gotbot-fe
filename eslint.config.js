@@ -18,7 +18,7 @@ module.exports = tseslint.config(
         "error",
         {
           type: "attribute",
-          prefix: "gotbot-chef",
+          prefix: "gotbotChef",
           style: "camelCase",
         },
       ],
