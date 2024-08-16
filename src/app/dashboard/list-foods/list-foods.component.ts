@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
@@ -11,10 +12,11 @@ import { takeUntil } from 'rxjs';
   selector: 'gotbot-chef-list-foods',
   standalone: true,
   imports: [
-    PaginationModule
+    PaginationModule,
+    CurrencyPipe
   ],
   templateUrl: './list-foods.component.html',
-  styles: [`:host {display: block}`]
+  styles: [':host {display: block}']
 })
 export class ListFoodsComponent extends HasObservablesDirective {
   public readonly pagination = viewChild(PaginationComponent);
