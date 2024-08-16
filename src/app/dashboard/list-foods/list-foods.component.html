@@ -1,1 +1,8 @@
-<p>list-foods works!</p>
+<div class="row mt-2">
+  <div class="col-12 d-flex justify-content-center">
+    <pagination [totalItems]="paginatedFoods()?.meta?.total || 0"
+                [maxSize]="7"
+                [itemsPerPage]="paginatedFoods()?.meta?.per_page || 0"
+                (pageChanged)="pageChanged($event)"/>
+  </div>
+</div>
