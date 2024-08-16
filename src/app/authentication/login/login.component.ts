@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
+import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { scrollToError } from '@gotbot-chef/shared/helpers/scroll-helper';
 import { validateAllFormFields } from '@gotbot-chef/shared/helpers/validators';
 import { UserModel } from '@gotbot-chef/shared/models/user.model';
@@ -19,7 +20,8 @@ import { finalize, switchMap, takeUntil, tap } from 'rxjs';
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    FormInputComponent
+    FormInputComponent,
+    LoadingStateDirective
   ],
   templateUrl: './login.component.html',
   styles: ``
@@ -42,12 +44,12 @@ export class LoginComponent extends HasObservablesDirective {
       return scrollToError();
     }
 
-    this.loadingStateService.start('processing');
+    this.loadingStateService.start(['processing', 'login']);
     this.httpClient.post<{ token: string }>('/gotbot/auth/login', this.loginForm.value)
       .pipe(
         tap(res => this.tokenService.setToken(res.token)),
         switchMap(() => this.httpClient.get<UserModel>('/gotbot/user')),
-        finalize(() => this.loadingStateService.end('processing')),
+        finalize(() => this.loadingStateService.end(['processing', 'login'])),
         takeUntil(this.destroy$)
       )
       .subscribe({
@@ -59,7 +61,7 @@ export class LoginComponent extends HasObservablesDirective {
         error: (err) => {
           this.loginForm.controls.password.setValue(null);
 
-          return this.toastr.error(err.message ?? 'Invalid credentials', 'Login failed');
+          return this.toastr.error(err.error?.message ?? err.message ?? 'Invalid credentials', 'Login failed');
         }
       });
   }
