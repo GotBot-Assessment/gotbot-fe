@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, inject } from '@angular/core';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { PaginatedResponse } from '@gotbot-chef/shared/models/api.response';
+import { FoodModel } from '@gotbot-chef/shared/models/food.model';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs';
 
@@ -22,7 +23,7 @@ export class ListFoodsComponent extends HasObservablesDirective {
   }
 
   private getMeals(): void {
-    this.httpClient.get<PaginatedResponse<unknown>>('/gotbot/foods')
+    this.httpClient.get<PaginatedResponse<FoodModel>>('/gotbot/foods')
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
