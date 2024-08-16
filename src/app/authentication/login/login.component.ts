@@ -9,6 +9,7 @@ import { UserModel } from '@gotbot-chef/shared/models/user.model';
 import { TokenService } from '@gotbot-chef/shared/services/token.service';
 import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
 import { UserProfileService } from '@gotbot-chef/shared/services/user-profile.service';
+import { FormInputComponent } from '@gotbot-chef/shared/ui/form-input/form-input.component';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, switchMap, takeUntil, tap } from 'rxjs';
 
@@ -17,7 +18,8 @@ import { finalize, switchMap, takeUntil, tap } from 'rxjs';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    FormInputComponent
   ],
   templateUrl: './login.component.html',
   styles: ``

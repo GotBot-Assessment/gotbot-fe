@@ -29,7 +29,7 @@
                [formControlName]="controlName()"
                [step]="step()"
                [placeholder]="placeholder() ?? ''"
-               [spindleLoadingState]="loadingStateAlias()"
+               [gotbotChefLoadingState]="loadingStateAlias()"
                [min]="minNumber()"
                [max]="maxNumber()"/>
       } @else if (type() === 'textarea') {
@@ -37,7 +37,7 @@
                   [class]="formControlClass()"
                   [class.error]="control.errors && control.touched"
                   [placeholder]="placeholder()"
-                  [spindleLoadingState]="loadingStateAlias()"
+                  [gotbotChefLoadingState]="loadingStateAlias()"
                   [rows]="rows()"
                   [formControlName]="controlName()"></textarea>
       } @else if (type() === 'file') {
@@ -48,7 +48,7 @@
                [accept]="acceptTypes()"
                [formControlName]="controlName()"
                [placeholder]="placeholder() ?? ''"
-               [spindleLoadingState]="loadingStateAlias()"
+               [gotbotChefLoadingState]="loadingStateAlias()"
                (change)="onFilesChanged($event)"
                [multiple]="multiple()"/>
       } @else if (type() === 'range') {
@@ -59,7 +59,7 @@
                class="form-range"
                [step]="step()"
                [placeholder]="placeholder() ?? ''"
-               [spindleLoadingState]="loadingStateAlias()"
+               [gotbotChefLoadingState]="loadingStateAlias()"
                [min]="minNumber()"
                [max]="maxNumber()"/>
       } @else if (type() === 'select' && !multiple()) {
@@ -67,7 +67,7 @@
                 [class.error]="control.errors && control.touched"
                 [id]="controlName()"
                 [formControlName]="controlName()"
-                [spindleLoadingState]="loadingStateAlias()">
+                [gotbotChefLoadingState]="loadingStateAlias()">
           <option [value]="null" disabled>{{ placeholder() || 'Select an option' }}</option>
           @for (option of selectOptions(); track option[bindValue()]) {
             <option [value]="option[bindValue()]">{{ option[bindLabel()] }}</option>
@@ -78,14 +78,14 @@
                                  [placeholder]="placeholder() || 'Select an option(s)'"
                                  [settings]="multiSelectDropdownSettings"
                                  [data]="selectOptions()"
-                                 [spindleLoadingState]="loadingStateAlias()"
+                                 [gotbotChefLoadingState]="loadingStateAlias()"
                                  [formControlName]="controlName()"/>
       } @else if (type() === 'yes-no') {
         <select class="form-select {{ formControlClass() }}"
                 [class.error]="control.errors && control.touched"
                 [id]="controlName()"
                 [formControlName]="controlName()"
-                [spindleLoadingState]="loadingStateAlias()">
+                [gotbotChefLoadingState]="loadingStateAlias()">
           <option [value]="null" disabled>{{ placeholder() || 'Select a value' }}</option>
           <option value="Yes">Yes</option>
           <option value="No">No</option>
@@ -97,7 +97,7 @@
                [id]="controlName()"
                [formControlName]="controlName()"
                [placeholder]="placeholder() ?? ''"
-               [spindleLoadingState]="loadingStateAlias()"
+               [gotbotChefLoadingState]="loadingStateAlias()"
                bsDatepicker
                [minDate]="minDate()"
                [maxDate]="maxDate()"
