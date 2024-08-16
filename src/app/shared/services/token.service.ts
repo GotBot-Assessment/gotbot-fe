@@ -17,6 +17,11 @@ export class TokenService {
   }
 
   public getToken(): string | undefined {
-    return this.storageService.getItem('gotbot-chef-tkn');
+    let token = this.storageService.getItem('gotbot-chef-tkn');
+    if (token) {
+      token = this.encryptionService.decrypt(token);
+    }
+
+    return token;
   }
 }
