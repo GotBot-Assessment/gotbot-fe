@@ -8,6 +8,8 @@ COPY . .
 
 RUN npm install
 
+EXPOSE 4200
+
 CMD ["npm", "start"]
 
 FROM node:20-alpine as production
