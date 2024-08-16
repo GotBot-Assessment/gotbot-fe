@@ -9,7 +9,7 @@ export const authenticationGuard = (shouldBeLoggedIn: boolean, redirectUrl: stri
     const token = inject(TokenService).getToken();
     const router = inject(Router);
 
-    if (!!(user && token) === shouldBeLoggedIn) {
+    if (!!(user || token) === shouldBeLoggedIn) {
       return true;
     }
 
