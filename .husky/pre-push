@@ -1,0 +1,5 @@
+npm run lint                                               #lint the project
+#npm run compodoc:build                                     #build the documentation.
+#npx ng test --watch=false --browsers ChromeHeadless       #test the project to check changes.
+npm run build -- --configuration=development               #build the project
+rm -rf dist                                                #delete the dist folder created.
