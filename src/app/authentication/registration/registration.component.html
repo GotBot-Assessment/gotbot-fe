@@ -1,7 +1,7 @@
 <div class="card-header text-center pt-4">
   <h5>Register</h5>
 </div>
-<div class="form" [formGroup]="registrationForm">
+<div class="form" [formGroup]="authForm">
   <gotbot-chef-form-input class="mb-3"
                           controlName="name"
                           label="Name"
@@ -24,6 +24,13 @@
                           type="password"
                           label="Password Confirmation"
                           placeholder="Password Confirmation"/>
+</div>
+<div class="text-center">
+  <button type="button"
+          class="btn bg-gradient-dark w-100 my-4 mb-2"
+          gotbotChefLoadingState="authenticate"
+          (click)="authenticate()">Sign Up
+  </button>
 </div>
 <p class="text-sm mt-3 mb-0">
   Already have an account?
