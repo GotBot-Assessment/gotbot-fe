@@ -23,5 +23,5 @@ export class RegistrationComponent extends AuthenticatesUserDirective {
     password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
     password_confirmation: new FormControl(null, [Validators.required, Validators.minLength(6)])
   });
-  public readonly authUrl = '/gotbot/auth/register';
+  protected readonly authUrl = '/gotbot/auth/register';
 }

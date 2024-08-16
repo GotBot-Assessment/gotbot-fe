@@ -15,12 +15,11 @@ import { FormInputComponent } from '@gotbot-chef/shared/ui/form-input/form-input
     LoadingStateDirective
   ],
   templateUrl: './login.component.html',
-  styles: ``
 })
 export class LoginComponent extends AuthenticatesUserDirective{
   public readonly authForm = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, [Validators.required, Validators.minLength(6)])
   });
-  public readonly authUrl = '/gotbot/auth/login';
+  protected readonly authUrl = '/gotbot/auth/login';
 }
