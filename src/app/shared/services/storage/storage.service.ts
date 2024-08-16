@@ -22,7 +22,7 @@ export abstract class StorageService {
    * Fetches the stored item from storage.
    * @param key
    */
-  public getItem<T>(key: string): T | undefined | string {
+  public getItem<T = string>(key: string): T | undefined {
     let savedString = this.storage.getItem(key);
 
     if (!savedString) {
@@ -34,7 +34,7 @@ export abstract class StorageService {
       return JSON.parse(savedString) as T;
     }
 
-    return savedString;
+    return savedString as T;
   }
 
   /**
