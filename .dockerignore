@@ -1,0 +1,14 @@
+bin
+cicd
+dist
+e2e
+node_modules
+
+#ignore misc files.
+.husky
+.angular
+.github
+.editorconfig
+.eslintrc.json
+.gitignore
+README.md
