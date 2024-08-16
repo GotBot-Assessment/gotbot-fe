@@ -20,8 +20,9 @@ export function shouldShowError(formGroup: AbstractControl, controlName: string,
     return formGroup?.errors?.[errorKey] && formGroup.touched;
   }
 
-   
-  return (formGroup as UntypedFormGroup).controls[controlName]?.errors?.[errorKey] && (formGroup as UntypedFormGroup).controls[controlName].touched;
+
+  return (formGroup as UntypedFormGroup).controls[controlName]?.errors?.[errorKey]
+    && (formGroup as UntypedFormGroup).controls[controlName].touched;
 }
 
 /**
