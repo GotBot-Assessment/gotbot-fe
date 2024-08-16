@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +35,8 @@
     "@angular/compiler-cli": "^18.0.0",
     "@types/crypto-js": "^4.2.2",
     "@types/jasmine": "~5.1.0",
+    "angular-eslint": "18.3.0",
+    "eslint": "^9.9.0",
     "husky": "^9.1.4",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
@@ -43,7 +46,8 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "lint-staged": "^15.2.9",
     "ng-lint-staged": "^12.0.4",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "typescript-eslint": "8.1.0"
   },
   "lint-staged": {
     "*.ts": [
