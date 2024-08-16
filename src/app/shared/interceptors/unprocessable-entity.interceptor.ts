@@ -14,12 +14,14 @@ export const unprocessableEntityInterceptor: HttpInterceptorFn = (req, next) => 
   return next(req).pipe(
     catchError(err => {
       if (err.status === 422) {
-        validationErrorsService.pushErrors(err.error.errors);
+        validationErrorsService.pushErrors(err.error?.errors ?? err.error?.message);
         scrollToSelector('.server-error');
 
-        err.error.message = Object.values(err.error.errors)
-          .flat()
-          .join('\n');
+        if (Array.isArray(err.error?.errors)) {
+          err.error.message = Object.values(err.error.errors)
+            .flat()
+            .join('\n');
+        }
       }
 
       if (err.status === 401) {

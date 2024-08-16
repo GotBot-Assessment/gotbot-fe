@@ -1,0 +1,183 @@
+<div class="mb-3">
+  <div [class.row]="orientation() === 'horizontal'">
+    @if (label()) {
+      <label [for]="controlName()" [class]="labelClasses()" class="d-flex justify-content-between">
+        <div>
+          {{ label() }}
+          @if (isRequired) {
+            <span class="required-field">*</span>
+          }
+        </div>
+
+        @if (subLabel() && orientation() === 'vertical') {
+          <small [id]="controlName()" class="form-text">{{ subLabel() }}</small>
+        }
+      </label>
+    }
+    <div class="col input-group input-group-merge">
+      @if (icon()) {
+        <span class="input-group-text"
+              [class.error]="control.errors && control.touched"><i [class]="icon()"></i></span>
+      }
+
+      @if (['text', 'number', 'password', 'email'].includes(type())) {
+        <input [type]="type()"
+               [class]="formControlClass()"
+               [class.error]="control.errors && control.touched"
+               [id]="controlName()"
+               [accept]="acceptTypes()"
+               [formControlName]="controlName()"
+               [step]="step()"
+               [placeholder]="placeholder() ?? ''"
+               [gotbotChefLoadingState]="loadingStateAlias()"
+               [min]="minNumber()"
+               [max]="maxNumber()"/>
+      } @else if (type() === 'textarea') {
+        <textarea [id]="controlName()"
+                  [class]="formControlClass()"
+                  [class.error]="control.errors && control.touched"
+                  [placeholder]="placeholder()"
+                  [gotbotChefLoadingState]="loadingStateAlias()"
+                  [rows]="rows()"
+                  [formControlName]="controlName()"></textarea>
+      } @else if (type() === 'file') {
+        <input [type]="type()"
+               [class]="formControlClass()"
+               [class.error]="control.errors && control.touched"
+               [id]="controlName()"
+               [accept]="acceptTypes()"
+               [formControlName]="controlName()"
+               [placeholder]="placeholder() ?? ''"
+               [gotbotChefLoadingState]="loadingStateAlias()"
+               (change)="onFilesChanged($event)"
+               [multiple]="multiple()"/>
+      } @else if (type() === 'range') {
+        <input [type]="type()"
+               [id]="controlName()"
+               [accept]="acceptTypes()"
+               [formControlName]="controlName()"
+               class="form-range"
+               [step]="step()"
+               [placeholder]="placeholder() ?? ''"
+               [gotbotChefLoadingState]="loadingStateAlias()"
+               [min]="minNumber()"
+               [max]="maxNumber()"/>
+      } @else if (type() === 'select' && !multiple()) {
+        <select [class]="formControlClass()"
+                [class.error]="control.errors && control.touched"
+                [id]="controlName()"
+                [formControlName]="controlName()"
+                [gotbotChefLoadingState]="loadingStateAlias()">
+          <option [value]="null" disabled>{{ placeholder() || 'Select an option' }}</option>
+          @for (option of selectOptions(); track option[bindValue()]) {
+            <option [value]="option[bindValue()]">{{ option[bindLabel()] }}</option>
+          }
+        </select>
+      } @else if (type() === 'select' && multiple()) {
+        <ng-multiselect-dropdown [id]="controlName()"
+                                 [placeholder]="placeholder() || 'Select an option(s)'"
+                                 [settings]="multiSelectDropdownSettings"
+                                 [data]="selectOptions()"
+                                 [gotbotChefLoadingState]="loadingStateAlias()"
+                                 [formControlName]="controlName()"/>
+      } @else if (type() === 'yes-no') {
+        <select class="form-select {{ formControlClass() }}"
+                [class.error]="control.errors && control.touched"
+                [id]="controlName()"
+                [formControlName]="controlName()"
+                [gotbotChefLoadingState]="loadingStateAlias()">
+          <option [value]="null" disabled>{{ placeholder() || 'Select a value' }}</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      } @else if (type() === 'date') {
+        <input type="text"
+               [class]="formControlClass()"
+               [class.error]="control.errors && control.touched"
+               [id]="controlName()"
+               [formControlName]="controlName()"
+               [placeholder]="placeholder() ?? ''"
+               [gotbotChefLoadingState]="loadingStateAlias()"
+               bsDatepicker
+               [minDate]="minDate()"
+               [maxDate]="maxDate()"
+               [bsConfig]="calenderConfig()"/>
+      }
+    </div>
+  </div>
+  <div class="row mt-0">
+    @if (orientation() === 'horizontal') {
+      <div class="col-sm-{{ labelSize() }}"></div>
+    }
+    <div class="col">
+      @if (subLabel() && orientation() === 'horizontal') {
+        <small [id]="controlName()" class="form-text">{{ subLabel() }}</small>
+      }
+      <!--errors-->
+      @if (control) {
+        @if (control | shouldShowError : controlName()) {
+          <span class="text-danger d-block">
+        <small>{{ validationErrors()['required'] || 'Please enter a value.' }}</small>
+      </span>
+        }
+
+        @if (control | shouldShowError : controlName() : 'pattern') {
+          <span class="text-danger d-block">
+        <small>{{ validationErrors()['pattern'] || 'This field must be valid' }}</small>
+      </span>
+        }
+
+        @if (control | shouldShowError : controlName() : 'max') {
+          <span class="text-danger d-block">
+         <small>{{ validationErrors()['max'] || 'Value should not exceed ' + control.errors?.['max'].max }}</small>
+      </span>
+        }
+
+        @if (control | shouldShowError : controlName() : 'min') {
+          <span class="text-danger d-block">
+        <small>{{ validationErrors()['min'] || 'Value should not be below ' + control.errors?.['min'].min }}</small>
+      </span>
+        }
+
+        @if (control | shouldShowError : controlName() : 'minlength') {
+          <span class="text-danger d-block">
+        <small>{{ validationErrors()['minlength'] || 'Value should not be shorter than ' + control.errors?.['minlength'].requiredLength + ' characters.' }}</small>
+      </span>
+        }
+
+        @if (control | shouldShowError : controlName() : 'maxlength') {
+          <span class="text-danger d-block">
+        <small>{{ validationErrors()['maxlength'] || 'Value should not be more than ' + control.errors?.['maxlength'].requiredLength + ' characters.' }}</small>
+      </span>
+        }
+
+        @if (control | shouldShowError : controlName() : 'weakPassword') {
+          <span class="text-danger d-block">
+        <small>{{ validationErrors()['weakPassword'] || control.errors!['weakPassword'] }}</small>
+      </span>
+        }
+        @for (errorKey of controlErrorKeys; track errorKey) {
+          @if (control.hasError(errorKey) && !manuallyErrorKeys.includes(errorKey) && isErrorString(control.errors![errorKey])) {
+            <span class="text-danger d-block">
+              <small>{{ validationErrors()[errorKey] || control.errors![errorKey] }}</small>
+            </span>
+          }
+        }
+      }
+
+      @for (errorKey of parentFormErrorKeys(); track errorKey) {
+        @if (parentFormGroup.hasError(errorKey)) {
+          <span class="text-danger d-block">
+      <small>{{ validationErrors()[errorKey] || parentFormGroup.errors![errorKey] }}</small>
+    </span>
+        }
+      }
+
+      @for (serverError of serverErrors(); track serverError) {
+        <span class="text-danger d-block server-error">
+      <small>{{ serverError }}</small>
+    </span>
+      }
+    </div>
+  </div>
+</div>
