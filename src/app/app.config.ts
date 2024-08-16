@@ -7,6 +7,8 @@ import { httpCallsProgressInterceptor } from '@gotbot-chef/shared/interceptors/h
 import { jwtInterceptor } from '@gotbot-chef/shared/interceptors/jwt.interceptor';
 import { unprocessableEntityInterceptor } from '@gotbot-chef/shared/interceptors/unprocessable-entity.interceptor';
 import { urlAdjusterInterceptor } from '@gotbot-chef/shared/interceptors/url-adjuster.interceptors';
+import { LocalStorageService } from '@gotbot-chef/shared/services/storage/local-storage.service';
+import { StorageService } from '@gotbot-chef/shared/services/storage/storage.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 export const appConfig: ApplicationConfig = {
@@ -28,6 +30,10 @@ export const appConfig: ApplicationConfig = {
         unprocessableEntityInterceptor
       ])
     ),
-    importProvidersFrom(ModalModule.forRoot())
+    importProvidersFrom(ModalModule.forRoot()),
+    {
+      provide: StorageService,
+      useClass: LocalStorageService
+    }
   ]
 };
