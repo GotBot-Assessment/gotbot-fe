@@ -10,6 +10,7 @@ RUN npm install
 
 EXPOSE 4200
 
+#Run the app in dev mode.
 CMD ["npm", "start"]
 
 FROM node:20-alpine as production
