@@ -3,6 +3,7 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding, withHashLocation, withViewTransitions } from '@angular/router';
 import { routes } from '@gotbot-chef/app.routes';
+import { httpCallsProgressInterceptor } from '@gotbot-chef/shared/interceptors/http-calls-progress.interceptor';
 import { jwtInterceptor } from '@gotbot-chef/shared/interceptors/jwt.interceptor';
 import { urlAdjusterInterceptor } from '@gotbot-chef/shared/interceptors/url-adjuster.interceptors';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([
         urlAdjusterInterceptor,
+        httpCallsProgressInterceptor,
         jwtInterceptor
       ])
     ),

@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, inject, input, OnDestroy } from '@angular/core';
-import { LoadingStateService } from '@gotbot-chef/shared/services/loading-state.service';
+import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
 import { Subscription } from 'rxjs';
 
 @Directive({
