@@ -2,8 +2,8 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding, withHashLocation, withViewTransitions } from '@angular/router';
-
 import { routes } from '@gotbot-chef/app.routes';
+import { jwtInterceptor } from '@gotbot-chef/shared/interceptors/jwt.interceptor';
 import { urlAdjusterInterceptor } from '@gotbot-chef/shared/interceptors/url-adjuster.interceptors';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
@@ -20,7 +20,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([
-        urlAdjusterInterceptor
+        urlAdjusterInterceptor,
+        jwtInterceptor
       ])
     ),
     importProvidersFrom(ModalModule.forRoot())
