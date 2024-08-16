@@ -5,6 +5,7 @@ import { provideRouter, withComponentInputBinding, withHashLocation, withViewTra
 import { routes } from '@gotbot-chef/app.routes';
 import { httpCallsProgressInterceptor } from '@gotbot-chef/shared/interceptors/http-calls-progress.interceptor';
 import { jwtInterceptor } from '@gotbot-chef/shared/interceptors/jwt.interceptor';
+import { unprocessableEntityInterceptor } from '@gotbot-chef/shared/interceptors/unprocessable-entity.interceptor';
 import { urlAdjusterInterceptor } from '@gotbot-chef/shared/interceptors/url-adjuster.interceptors';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
@@ -23,7 +24,8 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         urlAdjusterInterceptor,
         httpCallsProgressInterceptor,
-        jwtInterceptor
+        jwtInterceptor,
+        unprocessableEntityInterceptor
       ])
     ),
     importProvidersFrom(ModalModule.forRoot())
