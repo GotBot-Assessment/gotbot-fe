@@ -51,7 +51,7 @@ export class DashboardComponent extends HasObservablesDirective {
         },
         error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });
-    
-return true;
+
+    return true;
   }
 }
