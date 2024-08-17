@@ -43,7 +43,12 @@ export class DashboardComponent extends HasObservablesDirective {
 
   public openSaveFoodDialog(): void {
     this.modalService.show(SaveFoodComponent, {
-      class: 'modal-xl'
+      class: 'modal-xl',
+      initialState: {
+        onSaveFood: foodData => {
+          console.log(foodData);
+        }
+      }
     });
   }
 

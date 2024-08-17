@@ -33,7 +33,8 @@
                               type="file"
                               label="Picture"
                               placeholder="Picture of dish"
-                              acceptTypes="image/jpeg,image/gif,image/png"/>
+                              acceptTypes="image/jpeg,image/gif,image/png"
+                              (filesChange)="onFileChanges($event)"/>
 
     </div>
 

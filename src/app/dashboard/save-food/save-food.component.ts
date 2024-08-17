@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { scrollToError } from '@gotbot-chef/shared/helpers/scroll-helper';
@@ -19,6 +19,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   templateUrl: './save-food.component.html'
 })
 export class SaveFoodComponent {
+  public isCreate = true;
+  public onSaveFood = console.log;
   public readonly modalRef = inject(BsModalRef<SaveFoodComponent>);
   public readonly foodForm = new FormGroup({
     name: new FormControl(null, Validators.required),
@@ -26,7 +28,7 @@ export class SaveFoodComponent {
     area: new FormControl(null),
     price: new FormControl(null, Validators.required),
     description: new FormControl(null, Validators.required),
-    image: new FormControl(null, Validators.required),
+    image: new FormControl(null, this.isCreate ? Validators.required : []),
     ingredients: new FormArray([
       this.newIngredientForm()
     ], Validators.required)
@@ -40,6 +42,7 @@ export class SaveFoodComponent {
     'Dessert',
     'Beef'
   ].map(name => ({ name }));
+  private readonly selectedFile = signal<File | undefined>(undefined);
 
   public get ingredients(): FormArray {
     return this.foodForm.controls.ingredients;
@@ -59,6 +62,15 @@ export class SaveFoodComponent {
 
       return scrollToError();
     }
+
+    return this.onSaveFood({
+      ...this.foodForm.getRawValue(),
+      image: this.selectedFile()
+    });
+  }
+
+  public onFileChanges(files: Array<File>): void {
+    this.selectedFile.set(files[0]);
   }
 
   private newIngredientForm(): FormGroup {
