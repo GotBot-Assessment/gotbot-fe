@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SaveFoodComponent } from '@gotbot-chef/dashboard/save-food/save-food.component';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { FoodModel } from '@gotbot-chef/shared/models/food.model';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
 import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, forkJoin, switchMap, takeUntil } from 'rxjs';
 
@@ -25,6 +25,8 @@ export class DashboardComponent extends HasObservablesDirective {
   private readonly toasterService = inject(ToastrService);
   private readonly modalService = inject(BsModalService);
   private readonly loadingStateService = inject(LoadingStateService);
+  private readonly router = inject(Router);
+  private modalRef?: BsModalRef;
 
   public logout(): void {
     this.dialogService.open({
@@ -45,11 +47,9 @@ export class DashboardComponent extends HasObservablesDirective {
   }
 
   public openSaveFoodDialog(): void {
-    this.modalService.show(SaveFoodComponent, {
+    this.modalRef = this.modalService.show(SaveFoodComponent, {
       class: 'modal-xl',
-      initialState: {
-        onSaveFood: foodData => this.saveFood(foodData)
-      }
+      initialState: { onSaveFood: foodData => this.saveFood(foodData) }
     });
   }
 
@@ -76,7 +76,9 @@ export class DashboardComponent extends HasObservablesDirective {
       .subscribe({
         next: (res) => {
           const [, ingredient] = res as Array<any>;
-          console.log(ingredient);
+          this.modalRef?.hide();
+
+          return this.router.navigate(['/dashboard', ingredient.foodId]);
         },
         error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });
