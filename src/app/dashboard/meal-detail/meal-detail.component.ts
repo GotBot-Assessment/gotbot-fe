@@ -20,7 +20,7 @@ import { finalize, forkJoin, takeUntil } from 'rxjs';
     CurrencyPipe,
     LoadingStateDirective
   ],
-  templateUrl: './meal-detail.component.html',
+  templateUrl: './meal-detail.component.html'
 })
 export class MealDetailComponent extends HasObservablesDirective {
   public readonly id = input.required<number>();

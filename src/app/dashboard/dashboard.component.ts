@@ -78,7 +78,8 @@ export class DashboardComponent extends HasObservablesDirective {
           const [, ingredient] = res as Array<any>;
           this.modalRef?.hide();
 
-          return this.router.navigate(['/dashboard', ingredient.mealId]);
+          return this.router.navigate(['/dashboard', ingredient.mealId])
+            .then(() => window.location.reload());
         },
         error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });
