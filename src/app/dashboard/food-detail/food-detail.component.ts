@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, inject, input, signal } from '@angular/core';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
@@ -9,9 +10,11 @@ import { takeUntil } from 'rxjs';
 @Component({
   selector: 'gotbot-chef-food-detail',
   standalone: true,
-  imports: [],
+  imports: [
+    CurrencyPipe
+  ],
   templateUrl: './food-detail.component.html',
-  styles: ''
+  styles: ['.btn-xs {padding: 5px !important;}']
 })
 export class FoodDetailComponent extends HasObservablesDirective {
   public readonly id = input.required<number>();
