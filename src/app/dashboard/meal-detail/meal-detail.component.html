@@ -1,15 +1,15 @@
-@if (food(); as food) {
+@if (meal(); as meal) {
   <div class="d-flex justify-content-between align-items-center">
     <button class="btn btn-secondary"
-            gotbotChefLoadingState="save-food"
-            (click)="openSaveFoodDialog()">
-      Edit Food
+            gotbotChefLoadingState="save-meal"
+            (click)="openSaveMealDialog()">
+      Edit Meal
     </button>
-    <h3 class="font-weight-bolder">{{ food.name }}</h3>
+    <h3 class="font-weight-bolder">{{ meal.name }}</h3>
     <button class="btn btn-danger"
-            gotbotChefLoadingState="delete-food"
-            (click)="confirmFoodDelete()">
-      Delete Food
+            gotbotChefLoadingState="delete-meal"
+            (click)="confirmMealDelete()">
+      Delete Meal
     </button>
   </div>
   <div class="row mt-4">
@@ -20,15 +20,15 @@
             <div class="col-md-4 ms-auto text-center mt-lg-0">
               <div class="bg-gradient-primary border-radius-lg h-100">
                 <div class="position-relative d-flex align-items-center justify-content-center h-100">
-                  <img class="w-100 position-relative z-index-2 rounded" [src]="food.image?.url"
+                  <img class="w-100 position-relative z-index-2 rounded" [src]="meal.image?.url"
                        alt="rocket">
                 </div>
               </div>
             </div>
             <div class="col-md-8">
               <div class="d-flex flex-column h-100">
-                <h3 class="font-weight-bolder">{{ food.name }}</h3>
-                <p class="mb-5">{{ food.description }}</p>
+                <h3 class="font-weight-bolder">{{ meal.name }}</h3>
+                <p class="mb-5">{{ meal.description }}</p>
                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
                   Created {{ formattedDate() }}
                 </a>
@@ -50,7 +50,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Price</p>
                 <h5 class="font-weight-bolder mb-0">
-                  {{ food.price | currency : 'R ' }}
+                  {{ meal.price | currency : 'R ' }}
                 </h5>
               </div>
             </div>
@@ -69,7 +69,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Category</p>
                 <h5 class="font-weight-bolder mb-0">
-                  {{ food.category }}
+                  {{ meal.category }}
                 </h5>
               </div>
             </div>
@@ -88,7 +88,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Area</p>
                 <h5 class="font-weight-bolder mb-0">
-                  {{ food.area ?? 'Unspecified' }}
+                  {{ meal.area ?? 'Unspecified' }}
                 </h5>
               </div>
             </div>
@@ -123,7 +123,7 @@
     <div class="col-md-6">
       <h4>Ingredients</h4>
       <ul class="list-group">
-        @for (ingredient of food.ingredients; track ingredient.id) {
+        @for (ingredient of meal.ingredients; track ingredient.id) {
           <li class="list-group-item">{{ ingredient.name }}</li>
         }
       </ul>

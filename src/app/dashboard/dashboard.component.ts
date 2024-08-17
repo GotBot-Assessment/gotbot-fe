@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { SaveFoodComponent } from '@gotbot-chef/dashboard/save-food/save-food.component';
+import { SaveMealComponent } from '@gotbot-chef/dashboard/save-meal/save-meal.component';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
@@ -46,31 +46,31 @@ export class DashboardComponent extends HasObservablesDirective {
     });
   }
 
-  public openSaveFoodDialog(): void {
-    this.modalRef = this.modalService.show(SaveFoodComponent, {
+  public openSaveMealDialog(): void {
+    this.modalRef = this.modalService.show(SaveMealComponent, {
       class: 'modal-xl',
-      initialState: { onSaveFood: foodData => this.saveFood(foodData) }
+      initialState: { onSaveMeal: mealData => this.saveMeal(mealData) }
     });
   }
 
-  private saveFood(foodData: Record<string, any>): void {
-    this.loadingStateService.start(['processing', 'save-food']);
+  private saveMeal(mealData: Record<string, any>): void {
+    this.loadingStateService.start(['processing', 'save-meal']);
 
-    this.httpClient.post<MealModel>('/gotbot/foods', foodData)
+    this.httpClient.post<MealModel>('/gotbot/meals', mealData)
       .pipe(
-        switchMap(food => {
+        switchMap(meal => {
           const formData = new FormData();
-          formData.append('image', foodData['image']);
+          formData.append('image', mealData['image']);
 
           return forkJoin([
-            this.httpClient.post(`/gotbot/foods/${ food.id }`, formData),
+            this.httpClient.post(`/gotbot/meals/${ meal.id }`, formData),
             //map create ingredients.
-            ...foodData['ingredients'].map((ingredient: any) => {
-              return this.httpClient.post(`/gotbot/foods/${ food.id }/ingredients`, { name: ingredient['name'] });
+            ...mealData['ingredients'].map((ingredient: any) => {
+              return this.httpClient.post(`/gotbot/meals/${ meal.id }/ingredients`, { name: ingredient['name'] });
             })
           ]);
         }),
-        finalize(() => this.loadingStateService.end(['processing', 'save-food'])),
+        finalize(() => this.loadingStateService.end(['processing', 'save-meal'])),
         takeUntil(this.destroy$)
       )
       .subscribe({
@@ -78,7 +78,7 @@ export class DashboardComponent extends HasObservablesDirective {
           const [, ingredient] = res as Array<any>;
           this.modalRef?.hide();
 
-          return this.router.navigate(['/dashboard', ingredient.foodId]);
+          return this.router.navigate(['/dashboard', ingredient.mealId]);
         },
         error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });

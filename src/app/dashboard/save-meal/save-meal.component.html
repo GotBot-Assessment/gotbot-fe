@@ -1,6 +1,6 @@
 <div class="px-3 py-2">
-  <h4>Food details</h4>
-  <div class="row mt-3" [formGroup]="foodForm">
+  <h4>Meal details</h4>
+  <div class="row mt-3" [formGroup]="mealForm">
     <div class="col-md-6">
       <gotbot-chef-form-input class="mb-3"
                               controlName="name"
@@ -45,7 +45,7 @@
                               label="Description"
                               placeholder="Description"
                               rows="5"
-                              subLabel="More about this food (meal)"/>
+                              subLabel="More about this meal (meal)"/>
 
       <h5>Ingredients</h5>
       <ng-container formArrayName="ingredients">
@@ -58,7 +58,7 @@
                                     placeholder="Ingredient name"/>
             <button class="btn btn-outline-danger btn-sm rounded align-self-center"
                     style="padding: 5px !important;"
-                    gotbotChefLoadingState="save-food"
+                    gotbotChefLoadingState="save-meal"
                     (click)="removeIngredient(i)">
               x
             </button>
@@ -66,7 +66,7 @@
         }
       </ng-container>
       <button class="btn btn-secondary btn-sm"
-              gotbotChefLoadingState="save-food"
+              gotbotChefLoadingState="save-meal"
               (click)="addNewIngredient()">
         Add Ingredient
       </button>
@@ -76,12 +76,12 @@
 
   <div class="d-flex justify-content-between align-items-center mt-3">
     <button class="btn btn-danger"
-            gotbotChefLoadingState="save-food"
+            gotbotChefLoadingState="save-meal"
             (click)="modalRef.hide()">Cancel
     </button>
     <button class="btn btn-dark"
-            gotbotChefLoadingState="save-food"
-            (click)="saveFood()">Save Food
+            gotbotChefLoadingState="save-meal"
+            (click)="saveMeal()">Save Meal
     </button>
   </div>
 </div>

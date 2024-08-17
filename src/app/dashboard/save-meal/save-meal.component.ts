@@ -20,10 +20,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   templateUrl: './save-meal.component.html'
 })
 export class SaveMealComponent {
-  public readonly food = signal<MealModel | undefined>(undefined);
-  public onSaveFood = console.log;
+  public readonly meal = signal<MealModel | undefined>(undefined);
+  public onSaveMeal = console.log;
   public readonly modalRef = inject(BsModalRef<SaveMealComponent>);
-  public readonly foodForm = new FormGroup({
+  public readonly mealForm = new FormGroup({
     name: new FormControl(null, Validators.required),
     category: new FormControl(null, Validators.required),
     area: new FormControl(null),
@@ -46,11 +46,11 @@ export class SaveMealComponent {
   private readonly selectedFile = signal<File | undefined>(undefined);
 
   public constructor() {
-    effect(() => this.preFillFoodForm(this.food()));
+    effect(() => this.preFillMealForm(this.meal()));
   }
 
   public get ingredients(): FormArray {
-    return this.foodForm.controls.ingredients;
+    return this.mealForm.controls.ingredients;
   }
 
   public removeIngredient(index: number): void {
@@ -61,15 +61,15 @@ export class SaveMealComponent {
     return this.ingredients.push(this.newIngredientForm());
   }
 
-  public saveFood(): void {
-    if (this.foodForm.invalid) {
-      validateAllFormFields(this.foodForm);
+  public saveMeal(): void {
+    if (this.mealForm.invalid) {
+      validateAllFormFields(this.mealForm);
 
       return scrollToError();
     }
 
-    return this.onSaveFood({
-      ...this.foodForm.getRawValue(),
+    return this.onSaveMeal({
+      ...this.mealForm.getRawValue(),
       image: this.selectedFile()
     });
   }
@@ -85,21 +85,21 @@ export class SaveMealComponent {
     });
   }
 
-  private preFillFoodForm(food?: MealModel): void {
-    if (food) {
-      delete food.image;
+  private preFillMealForm(meal?: MealModel): void {
+    if (meal) {
+      delete meal.image;
       //@ts-expect-error This is alright.
-      this.foodForm.patchValue(food);
+      this.mealForm.patchValue(meal);
       if (this.ingredients.length) {
         this.ingredients.clear();
 
-        food.ingredients.forEach((ingredient) => {
+        meal.ingredients.forEach((ingredient) => {
           this.ingredients.push(this.newIngredientForm(ingredient));
         });
       }
 
-      this.foodForm.controls.image.removeValidators(Validators.required);
-      this.foodForm.controls.image.updateValueAndValidity();
+      this.mealForm.controls.image.removeValidators(Validators.required);
+      this.mealForm.controls.image.updateValueAndValidity();
     }
   }
 }

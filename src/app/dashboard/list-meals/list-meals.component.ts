@@ -22,7 +22,7 @@ import { takeUntil } from 'rxjs';
 })
 export class ListMealsComponent extends HasObservablesDirective {
   public readonly pagination = viewChild(PaginationComponent);
-  public readonly paginatedFoods = signal<PaginatedResponse<MealModel> | undefined>(undefined);
+  public readonly paginatedMeals = signal<PaginatedResponse<MealModel> | undefined>(undefined);
   public readonly currentPage = signal(1);
   private readonly httpClient = inject(HttpClient);
   private readonly toastrService = inject(ToastrService);
@@ -45,11 +45,11 @@ export class ListMealsComponent extends HasObservablesDirective {
   }
 
   private getMeals(): void {
-    this.httpClient.get<PaginatedResponse<MealModel>>('/gotbot/foods', {
+    this.httpClient.get<PaginatedResponse<MealModel>>('/gotbot/meals', {
       params: { page: this.currentPage() }
     }).pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response) => this.paginatedFoods.set(response),
+        next: (response) => this.paginatedMeals.set(response),
         error: (error) => this.toastrService.error(error.error?.message ?? error.message, 'Error')
       });
   }

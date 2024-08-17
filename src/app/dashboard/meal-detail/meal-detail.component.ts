@@ -2,7 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, computed, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { SaveFoodComponent } from '@gotbot-chef/dashboard/save-food/save-food.component';
+import { SaveMealComponent } from '@gotbot-chef/dashboard/save-meal/save-meal.component';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { MealModel } from '@gotbot-chef/shared/models/meal.model';
@@ -14,21 +14,20 @@ import { ToastrService } from 'ngx-toastr';
 import { finalize, forkJoin, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'gotbot-chef-food-detail',
+  selector: 'gotbot-chef-meal-detail',
   standalone: true,
   imports: [
     CurrencyPipe,
     LoadingStateDirective
   ],
-  templateUrl: './food-detail.component.html',
-  styles: ''
+  templateUrl: './meal-detail.component.html',
 })
-export class FoodDetailComponent extends HasObservablesDirective {
+export class MealDetailComponent extends HasObservablesDirective {
   public readonly id = input.required<number>();
-  public readonly food = signal<MealModel | undefined>(undefined);
+  public readonly meal = signal<MealModel | undefined>(undefined);
   public readonly formattedDate = computed(() => {
-    if (this.food()?.createdAt) {
-      return moment(this.food()?.createdAt).format('MMMM Do YYYY, h:mm a');
+    if (this.meal()?.createdAt) {
+      return moment(this.meal()?.createdAt).format('MMMM Do YYYY, h:mm a');
     }
 
     return undefined;
@@ -44,12 +43,12 @@ export class FoodDetailComponent extends HasObservablesDirective {
   public constructor() {
     super();
 
-    afterNextRender(() => this.fetchFoodDetail());
+    afterNextRender(() => this.fetchMealDetail());
   }
 
-  public confirmFoodDelete(): void {
+  public confirmMealDelete(): void {
     this.dialogService.open({
-      message: 'You want to delete this food item?',
+      message: 'You want to delete this meal item?',
       title: 'Are you sure?',
       actions: [
         {
@@ -59,36 +58,36 @@ export class FoodDetailComponent extends HasObservablesDirective {
         }, {
           text: 'Yes, delete!',
           class: 'btn-danger',
-          action: () => this.deleteFood()
+          action: () => this.deleteMeal()
         }
       ]
     });
   }
 
-  public openSaveFoodDialog(): void {
-    this.modalRef = this.modalService.show(SaveFoodComponent, {
+  public openSaveMealDialog(): void {
+    this.modalRef = this.modalService.show(SaveMealComponent, {
       class: 'modal-xl',
-      initialState: { onSaveFood: foodData => this.updateFood(foodData) }
+      initialState: { onSaveMeal: mealData => this.updateMeal(mealData) }
     });
 
-    this.modalRef.content?.food.set(this.food()!);
+    this.modalRef.content?.meal.set(this.meal()!);
   }
 
-  private fetchFoodDetail(): void {
-    this.httpClient.get<MealModel>('/gotbot/foods/' + this.id())
+  private fetchMealDetail(): void {
+    this.httpClient.get<MealModel>('/gotbot/meals/' + this.id())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: food => this.food.set(food),
+        next: meal => this.meal.set(meal),
         error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });
   }
 
-  private deleteFood(): boolean {
-    this.loadingStateService.start(['processing', 'delete-food']);
+  private deleteMeal(): boolean {
+    this.loadingStateService.start(['processing', 'delete-meal']);
 
-    this.httpClient.delete(`/gotbot/foods/${ this.food()?.id }`)
+    this.httpClient.delete(`/gotbot/meals/${ this.meal()?.id }`)
       .pipe(
-        finalize(() => this.loadingStateService.end(['processing', 'delete-food'])),
+        finalize(() => this.loadingStateService.end(['processing', 'delete-meal'])),
         takeUntil(this.destroy$)
       )
       .subscribe({
@@ -99,45 +98,45 @@ export class FoodDetailComponent extends HasObservablesDirective {
     return true;
   }
 
-  private updateFood(foodData: Record<string, any>): void {
-    this.loadingStateService.start(['processing', 'save-food']);
+  private updateMeal(mealData: Record<string, any>): void {
+    this.loadingStateService.start(['processing', 'save-meal']);
 
-    const updateFood$ = [this.httpClient.put(`/gotbot/foods/${ this.id() }`, foodData)];
+    const updateMeal$ = [this.httpClient.put(`/gotbot/meals/${ this.id() }`, mealData)];
 
-    //updating food image.
-    if (foodData['image']) {
+    //updating meal image.
+    if (mealData['image']) {
       const formData = new FormData();
-      formData.append('image', foodData['image']);
-      updateFood$.push(this.httpClient.post(`/gotbot/foods/${ this.id() }`, formData));
+      formData.append('image', mealData['image']);
+      updateMeal$.push(this.httpClient.post(`/gotbot/meals/${ this.id() }`, formData));
     }
 
     //adding new ingredients.
-    foodData['ingredients'].filter((ingredient: any) => !ingredient.id)
+    mealData['ingredients'].filter((ingredient: any) => !ingredient.id)
       .forEach((ingredient: any) => {
-        updateFood$.push(this.httpClient.post(`/gotbot/foods/${ this.id() }/ingredients`, { name: ingredient['name'] }));
+        updateMeal$.push(this.httpClient.post(`/gotbot/meals/${ this.id() }/ingredients`, { name: ingredient['name'] }));
       });
 
     //updating existing ingredients.
-    foodData['ingredients'].filter((ingredient: any) => ingredient.id)
+    mealData['ingredients'].filter((ingredient: any) => ingredient.id)
       .forEach((ingredient: any) => {
-        updateFood$.push(this.httpClient.put(`/gotbot/foods/${ this.id() }/ingredients/${ ingredient.id }`, { name: ingredient['name'] }));
+        updateMeal$.push(this.httpClient.put(`/gotbot/meals/${ this.id() }/ingredients/${ ingredient.id }`, { name: ingredient['name'] }));
       });
 
     //removing ingredients.
-    const currentIngredientIds = this.food()?.ingredients.map(ing => ing.id) ?? [];
-    const updatingIngredientIds = foodData['ingredients'].filter((ingredient: any) => ingredient.id)
+    const currentIngredientIds = this.meal()?.ingredients.map(ing => ing.id) ?? [];
+    const updatingIngredientIds = mealData['ingredients'].filter((ingredient: any) => ingredient.id)
       .map((ingredient: any) => +ingredient.id);
     currentIngredientIds.filter(id => !updatingIngredientIds.includes(id))
-      .forEach(ingredientId => updateFood$.push(this.httpClient.delete(`/gotbot/foods/${ this.id() }/ingredients/${ ingredientId }`)));
+      .forEach(ingredientId => updateMeal$.push(this.httpClient.delete(`/gotbot/meals/${ this.id() }/ingredients/${ ingredientId }`)));
 
-    forkJoin(updateFood$).pipe(
-      finalize(() => this.loadingStateService.end(['processing', 'save-food'])),
+    forkJoin(updateMeal$).pipe(
+      finalize(() => this.loadingStateService.end(['processing', 'save-meal'])),
       takeUntil(this.destroy$)
     ).subscribe({
       next: () => {
         this.modalRef?.hide();
 
-        return this.fetchFoodDetail();
+        return this.fetchMealDetail();
       },
       error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
     });

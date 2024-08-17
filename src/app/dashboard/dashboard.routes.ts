@@ -8,12 +8,12 @@ export const dashboardRoutes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('@gotbot-chef/dashboard/list-foods/list-foods.component')
-          .then((m) => m.ListFoodsComponent)
+        loadComponent: () => import('@gotbot-chef/dashboard/list-meals/list-meals.component')
+          .then((m) => m.ListMealsComponent)
       }, {
         path: ':id',
-        loadComponent: () => import('@gotbot-chef/dashboard/food-detail/food-detail.component')
-          .then(c => c.FoodDetailComponent)
+        loadComponent: () => import('@gotbot-chef/dashboard/meal-detail/meal-detail.component')
+          .then(c => c.MealDetailComponent)
       }
     ]
   }
