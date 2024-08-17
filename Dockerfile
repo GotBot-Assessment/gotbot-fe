@@ -23,6 +23,6 @@ RUN npm run build -- --configuration=development
 
 FROM httpd:alpine as server
 
-COPY --from=production /app/dist/got-bot-chef /usr/local/apache2/htdocs/
+COPY --from=production /app/dist/got-bot-chef/browser /usr/local/apache2/htdocs/
 
 EXPOSE 80
