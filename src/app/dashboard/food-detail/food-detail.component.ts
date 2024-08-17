@@ -1,17 +1,22 @@
 import { CurrencyPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, computed, inject, input, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
+import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
+import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
 import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { takeUntil } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'gotbot-chef-food-detail',
   standalone: true,
   imports: [
-    CurrencyPipe
+    CurrencyPipe,
+    LoadingStateDirective
   ],
   templateUrl: './food-detail.component.html',
   styles: ''
@@ -28,11 +33,32 @@ export class FoodDetailComponent extends HasObservablesDirective {
   });
   private readonly httpClient = inject(HttpClient);
   private readonly toasterService = inject(ToastrService);
+  private readonly dialogService = inject(DialogService);
+  private readonly loadingStateService = inject(LoadingStateService);
+  private readonly router = inject(Router);
 
   public constructor() {
     super();
 
     afterNextRender(() => this.fetchFoodDetail());
+  }
+
+  public confirmFoodDelete(): void {
+    this.dialogService.open({
+      message: 'You want to delete this food item?',
+      title: 'Are you sure?',
+      actions: [
+        {
+          text: 'Cancel',
+          class: 'btn-light',
+          action: () => true
+        }, {
+          text: 'Yes, delete!',
+          class: 'btn-danger',
+          action: () => this.deleteFood()
+        }
+      ]
+    });
   }
 
   private fetchFoodDetail(): void {
@@ -42,5 +68,21 @@ export class FoodDetailComponent extends HasObservablesDirective {
         next: food => this.food.set(food),
         error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });
+  }
+
+  private deleteFood(): boolean {
+    this.loadingStateService.start(['processing', 'delete-food']);
+
+    this.httpClient.delete(`/gotbot/foods/${ this.food()?.id }`)
+      .pipe(
+        finalize(() => this.loadingStateService.end(['processing', 'delete-food'])),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: () => this.router.navigate(['/dashboard']),
+        error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
+      });
+
+    return true;
   }
 }
