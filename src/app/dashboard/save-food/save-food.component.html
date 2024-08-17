@@ -1,5 +1,27 @@
 <div class="px-3 py-2">
   <h4>Food details</h4>
+  <div class="row mt-3" [formGroup]="foodForm">
+    <div class="col-md-6">
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="name"
+                              label="Name"
+                              placeholder="Meal name"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="price"
+                              type="number"
+                              label="Price"
+                              placeholder="Meal price"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="category"
+                              type="select"
+                              label="Category"
+                              placeholder="Meal category"
+                              [selectOptions]="categories"
+                              bindValue="name"/>
+    </div>
+  </div>
 
   <div class="d-flex justify-content-between align-items-center mt-3">
     <button class="btn btn-danger" (click)="modalRef.hide()">Cancel</button>
