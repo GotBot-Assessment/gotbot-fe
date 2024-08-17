@@ -2,12 +2,14 @@ import { CurrencyPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, computed, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { SaveFoodComponent } from '@gotbot-chef/dashboard/save-food/save-food.component';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { FoodModel } from '@gotbot-chef/shared/models/food.model';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
 import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
 import moment from 'moment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, takeUntil } from 'rxjs';
 
@@ -36,6 +38,8 @@ export class FoodDetailComponent extends HasObservablesDirective {
   private readonly dialogService = inject(DialogService);
   private readonly loadingStateService = inject(LoadingStateService);
   private readonly router = inject(Router);
+  private readonly modalService = inject(BsModalService);
+  private modalRef?: BsModalRef;
 
   public constructor() {
     super();
@@ -61,6 +65,13 @@ export class FoodDetailComponent extends HasObservablesDirective {
     });
   }
 
+  public openSaveFoodDialog(): void {
+    this.modalRef = this.modalService.show(SaveFoodComponent, {
+      class: 'modal-xl',
+      initialState: { onSaveFood: foodData => this.updateFood(foodData) }
+    });
+  }
+
   private fetchFoodDetail(): void {
     this.httpClient.get<FoodModel>('/gotbot/foods/' + this.id())
       .pipe(takeUntil(this.destroy$))
@@ -82,6 +93,12 @@ export class FoodDetailComponent extends HasObservablesDirective {
         next: () => this.router.navigate(['/dashboard']),
         error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });
+
+    return true;
+  }
+
+  private updateFood(foodData: Record<string, any>): boolean {
+    console.log(foodData, this.modalRef);
 
     return true;
   }
