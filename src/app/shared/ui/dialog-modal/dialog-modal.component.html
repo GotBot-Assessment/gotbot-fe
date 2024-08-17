@@ -28,7 +28,7 @@
     </div>
   }
   @if(showFooter) {
-    <div class="modal-footers">
+    <div class="modal-footers d-flex justify-content-between gap-2 px-3">
       @if(actions && actions.length) {
         @for(action of actions; track action) {
           <button type="button"
