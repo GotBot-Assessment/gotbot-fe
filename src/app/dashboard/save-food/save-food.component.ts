@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
+import { scrollToError } from '@gotbot-chef/shared/helpers/scroll-helper';
+import { validateAllFormFields } from '@gotbot-chef/shared/helpers/validators';
 import { ToFormGroupPipe } from '@gotbot-chef/shared/pipes/to-form-group.pipe';
 import { FormInputComponent } from '@gotbot-chef/shared/ui/form-input/form-input.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -49,6 +51,14 @@ export class SaveFoodComponent {
 
   public addNewIngredient(): void {
     return this.ingredients.push(this.newIngredientForm());
+  }
+
+  public saveFood(): void {
+    if (this.foodForm.invalid) {
+      validateAllFormFields(this.foodForm);
+
+      return scrollToError();
+    }
   }
 
   private newIngredientForm(): FormGroup {

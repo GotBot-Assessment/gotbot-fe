@@ -25,7 +25,7 @@
                               controlName="area"
                               type="text"
                               label="Area"
-                              placeholder="Area of origin"
+                              placeholder="Area of origin e.g. Italian"
                               subLabel="(optional) area of origin of this dish"/>
 
       <gotbot-chef-form-input class="mb-3"
@@ -79,7 +79,8 @@
             (click)="modalRef.hide()">Cancel
     </button>
     <button class="btn btn-dark"
-            gotbotChefLoadingState="save-food">Save Food
+            gotbotChefLoadingState="save-food"
+            (click)="saveFood()">Save Food
     </button>
   </div>
 </div>
