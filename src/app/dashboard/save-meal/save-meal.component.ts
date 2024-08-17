@@ -9,7 +9,7 @@ import { FormInputComponent } from '@gotbot-chef/shared/ui/form-input/form-input
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'gotbot-chef-save-food',
+  selector: 'gotbot-chef-save-meal',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -17,12 +17,12 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
     ToFormGroupPipe,
     LoadingStateDirective
   ],
-  templateUrl: './save-food.component.html'
+  templateUrl: './save-meal.component.html'
 })
-export class SaveFoodComponent {
+export class SaveMealComponent {
   public readonly food = signal<MealModel | undefined>(undefined);
   public onSaveFood = console.log;
-  public readonly modalRef = inject(BsModalRef<SaveFoodComponent>);
+  public readonly modalRef = inject(BsModalRef<SaveMealComponent>);
   public readonly foodForm = new FormGroup({
     name: new FormControl(null, Validators.required),
     category: new FormControl(null, Validators.required),

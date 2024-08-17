@@ -10,17 +10,17 @@ import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'gotbot-chef-list-foods',
+  selector: 'gotbot-chef-list-meals',
   standalone: true,
   imports: [
     PaginationModule,
     CurrencyPipe,
     RouterLink
   ],
-  templateUrl: './list-foods.component.html',
+  templateUrl: './list-meals.component.html',
   styles: [':host {display: block}']
 })
-export class ListFoodsComponent extends HasObservablesDirective {
+export class ListMealsComponent extends HasObservablesDirective {
   public readonly pagination = viewChild(PaginationComponent);
   public readonly paginatedFoods = signal<PaginatedResponse<MealModel> | undefined>(undefined);
   public readonly currentPage = signal(1);
