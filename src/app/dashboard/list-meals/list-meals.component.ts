@@ -4,25 +4,25 @@ import { afterNextRender, Component, effect, inject, signal, viewChild } from '@
 import { RouterLink } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { PaginatedResponse } from '@gotbot-chef/shared/models/api.response';
-import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { PageChangedEvent, PaginationComponent, PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'gotbot-chef-list-foods',
+  selector: 'gotbot-chef-list-meals',
   standalone: true,
   imports: [
     PaginationModule,
     CurrencyPipe,
     RouterLink
   ],
-  templateUrl: './list-foods.component.html',
+  templateUrl: './list-meals.component.html',
   styles: [':host {display: block}']
 })
-export class ListFoodsComponent extends HasObservablesDirective {
+export class ListMealsComponent extends HasObservablesDirective {
   public readonly pagination = viewChild(PaginationComponent);
-  public readonly paginatedFoods = signal<PaginatedResponse<FoodModel> | undefined>(undefined);
+  public readonly paginatedMeals = signal<PaginatedResponse<MealModel> | undefined>(undefined);
   public readonly currentPage = signal(1);
   private readonly httpClient = inject(HttpClient);
   private readonly toastrService = inject(ToastrService);
@@ -45,11 +45,11 @@ export class ListFoodsComponent extends HasObservablesDirective {
   }
 
   private getMeals(): void {
-    this.httpClient.get<PaginatedResponse<FoodModel>>('/gotbot/foods', {
+    this.httpClient.get<PaginatedResponse<MealModel>>('/gotbot/meals', {
       params: { page: this.currentPage() }
     }).pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response) => this.paginatedFoods.set(response),
+        next: (response) => this.paginatedMeals.set(response),
         error: (error) => this.toastrService.error(error.error?.message ?? error.message, 'Error')
       });
   }

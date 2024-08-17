@@ -3,13 +3,13 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { scrollToError } from '@gotbot-chef/shared/helpers/scroll-helper';
 import { validateAllFormFields } from '@gotbot-chef/shared/helpers/validators';
-import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { ToFormGroupPipe } from '@gotbot-chef/shared/pipes/to-form-group.pipe';
 import { FormInputComponent } from '@gotbot-chef/shared/ui/form-input/form-input.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'gotbot-chef-save-food',
+  selector: 'gotbot-chef-save-meal',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -17,13 +17,13 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
     ToFormGroupPipe,
     LoadingStateDirective
   ],
-  templateUrl: './save-food.component.html'
+  templateUrl: './save-meal.component.html'
 })
-export class SaveFoodComponent {
-  public readonly food = signal<FoodModel | undefined>(undefined);
-  public onSaveFood = console.log;
-  public readonly modalRef = inject(BsModalRef<SaveFoodComponent>);
-  public readonly foodForm = new FormGroup({
+export class SaveMealComponent {
+  public readonly meal = signal<MealModel | undefined>(undefined);
+  public onSaveMeal = console.log;
+  public readonly modalRef = inject(BsModalRef<SaveMealComponent>);
+  public readonly mealForm = new FormGroup({
     name: new FormControl(null, Validators.required),
     category: new FormControl(null, Validators.required),
     area: new FormControl(null),
@@ -46,11 +46,11 @@ export class SaveFoodComponent {
   private readonly selectedFile = signal<File | undefined>(undefined);
 
   public constructor() {
-    effect(() => this.preFillFoodForm(this.food()));
+    effect(() => this.preFillMealForm(this.meal()));
   }
 
   public get ingredients(): FormArray {
-    return this.foodForm.controls.ingredients;
+    return this.mealForm.controls.ingredients;
   }
 
   public removeIngredient(index: number): void {
@@ -61,15 +61,15 @@ export class SaveFoodComponent {
     return this.ingredients.push(this.newIngredientForm());
   }
 
-  public saveFood(): void {
-    if (this.foodForm.invalid) {
-      validateAllFormFields(this.foodForm);
+  public saveMeal(): void {
+    if (this.mealForm.invalid) {
+      validateAllFormFields(this.mealForm);
 
       return scrollToError();
     }
 
-    return this.onSaveFood({
-      ...this.foodForm.getRawValue(),
+    return this.onSaveMeal({
+      ...this.mealForm.getRawValue(),
       image: this.selectedFile()
     });
   }
@@ -78,28 +78,28 @@ export class SaveFoodComponent {
     this.selectedFile.set(files[0]);
   }
 
-  private newIngredientForm(data?: Partial<FoodModel['ingredients'][0]>): FormGroup {
+  private newIngredientForm(data?: Partial<MealModel['ingredients'][0]>): FormGroup {
     return new FormGroup({
       id: new FormControl(data?.id),
       name: new FormControl(data?.name, Validators.required)
     });
   }
 
-  private preFillFoodForm(food?: FoodModel): void {
-    if (food) {
-      delete food.image;
+  private preFillMealForm(meal?: MealModel): void {
+    if (meal) {
+      delete meal.image;
       //@ts-expect-error This is alright.
-      this.foodForm.patchValue(food);
+      this.mealForm.patchValue(meal);
       if (this.ingredients.length) {
         this.ingredients.clear();
 
-        food.ingredients.forEach((ingredient) => {
+        meal.ingredients.forEach((ingredient) => {
           this.ingredients.push(this.newIngredientForm(ingredient));
         });
       }
 
-      this.foodForm.controls.image.removeValidators(Validators.required);
-      this.foodForm.controls.image.updateValueAndValidity();
+      this.mealForm.controls.image.removeValidators(Validators.required);
+      this.mealForm.controls.image.updateValueAndValidity();
     }
   }
 }

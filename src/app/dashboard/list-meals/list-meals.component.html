@@ -1,4 +1,4 @@
-@if (!paginatedFoods()?.data?.length) {
+@if (!paginatedMeals()?.data?.length) {
   <div class="alert alert-danger" role="alert">
     No meals available at the moment.
   </div>
@@ -8,36 +8,36 @@
   <div class="col-12 mt-4">
     <div class="cards mb-4">
       <div class="card-header pb-0 p-3">
-        <h6 class="mb-1">Foods (Meals)</h6>
+        <h6 class="mb-1">Meals</h6>
         <p class="text-sm">
-          Food prepared at GotBot Chef (
-          {{ paginatedFoods()?.meta?.from }}
+          Prepared at GotBot Chef (
+          {{ paginatedMeals()?.meta?.from }}
           -
-          {{ paginatedFoods()?.meta?.to }}
-          of {{ paginatedFoods()?.meta?.total ?? 0 }} )
+          {{ paginatedMeals()?.meta?.to }}
+          of {{ paginatedMeals()?.meta?.total ?? 0 }} )
         </p>
       </div>
       <div class="card-body p-3">
         <div class="row">
-          @for (food of (paginatedFoods()?.data ?? []); track food.id) {
-            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4" style="cursor: pointer;" [routerLink]="[food.id]">
+          @for (meal of (paginatedMeals()?.data ?? []); track meal.id) {
+            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4" style="cursor: pointer;" [routerLink]="[meal.id]">
               <div class="card card-blog card-plain">
                 <div class="position-relative">
                   <a class="d-block shadow-xl border-radius-xl">
-                    <img [src]="food.image?.url" alt="img-blur-shadow"
+                    <img [src]="meal.image?.url" alt="img-blur-shadow"
                          class="img-fluid shadow border-radius-xl">
                   </a>
                 </div>
                 <div class="card-body bg-white mb-4 rounded px-1 pb-0">
                   <div class="text-gradient text-dark mb-2 text-sm d-flex justify-content-between align-items-center">
-                    <span>{{ food.category }}</span>
-                    <span class="text-white btn-outline-success" style="color: white !important;">{{ food.area }}</span>
+                    <span>{{ meal.category }}</span>
+                    <span class="text-white btn-outline-success" style="color: white !important;">{{ meal.area }}</span>
                   </div>
                   <a href="javascript:;">
-                    <h5>{{ food.name }}</h5>
+                    <h5>{{ meal.name }}</h5>
                   </a>
                   <p class="mb-4 text-xl">
-                    {{ food.price | currency : 'R ' }}
+                    {{ meal.price | currency : 'R ' }}
                   </p>
                 </div>
               </div>
@@ -51,9 +51,9 @@
 
 <div class="row mt-2">
   <div class="col-12 d-flex justify-content-center">
-    <pagination [totalItems]="paginatedFoods()?.meta?.total || 0"
+    <pagination [totalItems]="paginatedMeals()?.meta?.total || 0"
                 [maxSize]="7"
-                [itemsPerPage]="paginatedFoods()?.meta?.per_page || 0"
+                [itemsPerPage]="paginatedMeals()?.meta?.per_page || 0"
                 (pageChanged)="pageChanged($event)"
                 previousText="<"
                 nextText=">"/>
