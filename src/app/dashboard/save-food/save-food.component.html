@@ -1,0 +1,87 @@
+<div class="px-3 py-2">
+  <h4>Food details</h4>
+  <div class="row mt-3" [formGroup]="foodForm">
+    <div class="col-md-6">
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="name"
+                              label="Name"
+                              placeholder="Meal name"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="price"
+                              type="number"
+                              label="Price"
+                              placeholder="Meal price"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="category"
+                              type="select"
+                              label="Category"
+                              placeholder="Meal category"
+                              [selectOptions]="categories"
+                              bindValue="name"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="area"
+                              type="text"
+                              label="Area"
+                              placeholder="Area of origin e.g. Italian"
+                              subLabel="(optional) area of origin of this dish"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="image"
+                              type="file"
+                              label="Picture"
+                              placeholder="Picture of dish"
+                              acceptTypes="image/jpeg,image/gif,image/png"
+                              (filesChange)="onFileChanges($event)"/>
+
+    </div>
+
+    <div class="col-md-6">
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="description"
+                              type="textarea"
+                              label="Description"
+                              placeholder="Description"
+                              rows="5"
+                              subLabel="More about this food (meal)"/>
+
+      <h5>Ingredients</h5>
+      <ng-container formArrayName="ingredients">
+        @for (ingredient of ingredients.controls; track ingredient.value; let i = $index) {
+          <div class="d-flex justify-content-between align-items-center gap-1 mb-1"
+               [formGroup]="ingredient | toFormGroup">
+            <gotbot-chef-form-input class="flex-grow-1"
+                                    controlName="name"
+                                    label="Ingredient name"
+                                    placeholder="Ingredient name"/>
+            <button class="btn btn-outline-danger btn-sm rounded align-self-center"
+                    style="padding: 5px !important;"
+                    gotbotChefLoadingState="save-food"
+                    (click)="removeIngredient(i)">
+              x
+            </button>
+          </div>
+        }
+      </ng-container>
+      <button class="btn btn-secondary btn-sm"
+              gotbotChefLoadingState="save-food"
+              (click)="addNewIngredient()">
+        Add Ingredient
+      </button>
+    </div>
+  </div>
+
+
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <button class="btn btn-danger"
+            gotbotChefLoadingState="save-food"
+            (click)="modalRef.hide()">Cancel
+    </button>
+    <button class="btn btn-dark"
+            gotbotChefLoadingState="save-food"
+            (click)="saveFood()">Save Food
+    </button>
+  </div>
+</div>

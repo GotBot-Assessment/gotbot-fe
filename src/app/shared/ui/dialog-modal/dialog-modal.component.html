@@ -33,7 +33,7 @@
         @for(action of actions; track action) {
           <button type="button"
                   class="btn"
-                  [ngClass]="action.class ? action.class : 'btn-outline-primary rounded-pill'"
+                  [class]="action.class ? action.class : 'btn-outline-primary rounded-pill'"
                   (click)="runAction(action.action)"
                   [disabled]="isLoading">{{ action.text }}</button>
         }

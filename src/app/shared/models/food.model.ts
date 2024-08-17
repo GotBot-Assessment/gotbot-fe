@@ -3,7 +3,7 @@ export interface FoodModel {
   name: string;
   description: string;
   category: string;
-  area: string;
+  area?: string;
   price: number;
   image?: {
     id: number;
