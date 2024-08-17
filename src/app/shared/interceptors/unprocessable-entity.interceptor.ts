@@ -24,10 +24,6 @@ export const unprocessableEntityInterceptor: HttpInterceptorFn = (req, next) => 
         }
       }
 
-      if (err.status === 401) {
-        err.error.message = 'You are unauthorized';
-      }
-
       return throwError(() => err);
     })
   );

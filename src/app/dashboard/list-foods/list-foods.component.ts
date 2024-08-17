@@ -1,6 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { PaginatedResponse } from '@gotbot-chef/shared/models/api.response';
 import { FoodModel } from '@gotbot-chef/shared/models/food.model';
@@ -13,7 +14,8 @@ import { takeUntil } from 'rxjs';
   standalone: true,
   imports: [
     PaginationModule,
-    CurrencyPipe
+    CurrencyPipe,
+    RouterLink
   ],
   templateUrl: './list-foods.component.html',
   styles: [':host {display: block}']

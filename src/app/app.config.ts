@@ -5,6 +5,7 @@ import { provideRouter, withComponentInputBinding, withHashLocation, withViewTra
 import { routes } from '@gotbot-chef/app.routes';
 import { httpCallsProgressInterceptor } from '@gotbot-chef/shared/interceptors/http-calls-progress.interceptor';
 import { jwtInterceptor } from '@gotbot-chef/shared/interceptors/jwt.interceptor';
+import { unauthorizedInterceptor } from '@gotbot-chef/shared/interceptors/unauthorized.interceptor';
 import { unprocessableEntityInterceptor } from '@gotbot-chef/shared/interceptors/unprocessable-entity.interceptor';
 import { urlAdjusterInterceptor } from '@gotbot-chef/shared/interceptors/url-adjuster.interceptors';
 import { LocalStorageService } from '@gotbot-chef/shared/services/storage/local-storage.service';
@@ -28,7 +29,8 @@ export const appConfig: ApplicationConfig = {
         urlAdjusterInterceptor,
         httpCallsProgressInterceptor,
         jwtInterceptor,
-        unprocessableEntityInterceptor
+        unprocessableEntityInterceptor,
+        unauthorizedInterceptor
       ])
     ),
     provideToastr(),
