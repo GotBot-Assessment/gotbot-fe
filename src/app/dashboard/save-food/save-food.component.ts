@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { ToFormGroupPipe } from '@gotbot-chef/shared/pipes/to-form-group.pipe';
 import { FormInputComponent } from '@gotbot-chef/shared/ui/form-input/form-input.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -10,7 +11,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   imports: [
     ReactiveFormsModule,
     FormInputComponent,
-    ToFormGroupPipe
+    ToFormGroupPipe,
+    LoadingStateDirective
   ],
   templateUrl: './save-food.component.html'
 })
@@ -28,9 +30,13 @@ export class SaveFoodComponent {
     ], Validators.required)
   });
   public readonly categories = [
-    'Starter',
-    'Main',
-    'Dessert'
+    'Seafood',
+    'Side',
+    'Vegetarian',
+    'Pork',
+    'Pasta',
+    'Dessert',
+    'Beef'
   ].map(name => ({ name }));
 
   public get ingredients(): FormArray {
@@ -39,6 +45,10 @@ export class SaveFoodComponent {
 
   public removeIngredient(index: number): void {
     return this.ingredients.removeAt(index);
+  }
+
+  public addNewIngredient(): void {
+    return this.ingredients.push(this.newIngredientForm());
   }
 
   private newIngredientForm(): FormGroup {

@@ -49,27 +49,37 @@
       <h5>Ingredients</h5>
       <ng-container formArrayName="ingredients">
         @for (ingredient of ingredients.controls; track ingredient.value; let i = $index) {
-          <div class="d-flex justify-content-between align-items-center gap-1 mb-3"
+          <div class="d-flex justify-content-between align-items-center gap-1 mb-1"
                [formGroup]="ingredient | toFormGroup">
-            <gotbot-chef-form-input class="mb-3 flex-grow-1"
+            <gotbot-chef-form-input class="flex-grow-1"
                                     controlName="name"
                                     label="Ingredient name"
                                     placeholder="Ingredient name"/>
             <button class="btn btn-outline-danger btn-sm rounded align-self-center"
                     style="padding: 5px !important;"
+                    gotbotChefLoadingState="save-food"
                     (click)="removeIngredient(i)">
               x
             </button>
           </div>
         }
-
       </ng-container>
+      <button class="btn btn-secondary btn-sm"
+              gotbotChefLoadingState="save-food"
+              (click)="addNewIngredient()">
+        Add Ingredient
+      </button>
     </div>
   </div>
 
 
   <div class="d-flex justify-content-between align-items-center mt-3">
-    <button class="btn btn-danger" (click)="modalRef.hide()">Cancel</button>
-    <button class="btn btn-dark">Save Food</button>
+    <button class="btn btn-danger"
+            gotbotChefLoadingState="save-food"
+            (click)="modalRef.hide()">Cancel
+    </button>
+    <button class="btn btn-dark"
+            gotbotChefLoadingState="save-food">Save Food
+    </button>
   </div>
 </div>
