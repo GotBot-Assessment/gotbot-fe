@@ -29,7 +29,7 @@ export class SaveFoodComponent {
     area: new FormControl(null),
     price: new FormControl(null, Validators.required),
     description: new FormControl(null, Validators.required),
-    image: new FormControl<string | undefined>(undefined, Validators.required),
+    image: new FormControl(null, Validators.required),
     ingredients: new FormArray([
       this.newIngredientForm()
     ], Validators.required)
@@ -98,7 +98,6 @@ export class SaveFoodComponent {
         });
       }
 
-      this.foodForm.controls.image.patchValue(this.food()?.image?.url);
       this.foodForm.controls.image.removeValidators(Validators.required);
       this.foodForm.controls.image.updateValueAndValidity();
     }
