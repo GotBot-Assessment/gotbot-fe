@@ -26,7 +26,7 @@
                 <h3 class="font-weight-bolder">{{ food.name }}</h3>
                 <p class="mb-5">{{ food.description }}</p>
                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-                  Created {{ formattedDate }}
+                  Created {{ formattedDate() }}
                 </a>
               </div>
             </div>
@@ -103,7 +103,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Created At</p>
                 <h5 class="font-weight-bolder mb-0">
-                  {{ formattedDate }}
+                  {{ formattedDate() }}
                 </h5>
               </div>
             </div>

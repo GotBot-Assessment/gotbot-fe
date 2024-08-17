@@ -1,1 +1,46 @@
-<p>dialog-modal works!</p>
+<div class="modal-content">
+  <div class="modal-headers">
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.hide()"></button>
+  </div>
+  @if(title) {
+    <h4 class="text-center">{{ title }}</h4>
+  }
+  @if(message || messages || content) {
+    <div class="modal-body text-center">
+      @if(icon) {
+        <i class="{{ icon }}" style="font-size: 500%;"></i>
+      }
+      @if(message) {
+        @for(m of messageAsArray; track m) {
+          <p>{{ m }}</p>
+        }
+      }
+      @if(messages) {
+        <ul>
+          @for(message of messages; track message) {
+            <li>{{ message }}</li>
+          }
+        </ul>
+      }
+      @if(content) {
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      }
+    </div>
+  }
+  @if(showFooter) {
+    <div class="modal-footers d-flex justify-content-between gap-2 px-3">
+      @if(actions && actions.length) {
+        @for(action of actions; track action) {
+          <button type="button"
+                  class="btn"
+                  [ngClass]="action.class ? action.class : 'btn-outline-primary rounded-pill'"
+                  (click)="runAction(action.action)"
+                  [disabled]="isLoading">{{ action.text }}</button>
+        }
+      }
+      @else {
+        <button type="button" class="btn btn-outline-dark" (click)="modalRef.hide()" [disabled]="isLoading">Close</button>
+      }
+    </div>
+  }
+</div>

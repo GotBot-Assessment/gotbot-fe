@@ -1,3 +1,4 @@
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, inject, TemplateRef } from '@angular/core';
 import { DialogActionBtnOptions } from '@gotbot-chef/shared/services/ui/dialog.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -5,7 +6,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'gotbot-chef-dialog-modal',
   standalone: true,
-  imports: [],
+  imports: [
+    NgTemplateOutlet,
+    NgClass
+  ],
   templateUrl: './dialog-modal.component.html',
 })
 export class DialogModalComponent {
