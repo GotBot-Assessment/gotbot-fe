@@ -23,8 +23,8 @@ export class FoodDetailComponent extends HasObservablesDirective {
     if (this.food()?.createdAt) {
       return moment(this.food()?.createdAt).format('MMMM Do YYYY, h:mm a');
     }
-    
-return undefined;
+
+    return undefined;
   });
   private readonly httpClient = inject(HttpClient);
   private readonly toasterService = inject(ToastrService);
