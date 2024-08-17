@@ -11,7 +11,7 @@ import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-sta
 import moment from 'moment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import { finalize, takeUntil } from 'rxjs';
+import { finalize, forkJoin, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'gotbot-chef-food-detail',
@@ -103,6 +103,46 @@ export class FoodDetailComponent extends HasObservablesDirective {
   }
 
   private updateFood(foodData: Record<string, any>): void {
-    console.log(foodData, this.modalRef);
+    this.loadingStateService.start(['processing', 'save-food']);
+
+    const updateFood$ = [this.httpClient.put(`/gotbot/foods/${ this.id() }`, foodData)];
+
+    //updating food image.
+    if (foodData['image']) {
+      const formData = new FormData();
+      formData.append('image', foodData['image']);
+      updateFood$.push(this.httpClient.post(`/gotbot/foods/${ this.id() }`, formData));
+    }
+
+    //adding new ingredients.
+    foodData['ingredients'].filter((ingredient: any) => !ingredient.id)
+      .forEach((ingredient: any) => {
+        updateFood$.push(this.httpClient.post(`/gotbot/foods/${ this.id() }/ingredients`, { name: ingredient['name'] }));
+      });
+
+    //updating existing ingredients.
+    foodData['ingredients'].filter((ingredient: any) => ingredient.id)
+      .forEach((ingredient: any) => {
+        updateFood$.push(this.httpClient.put(`/gotbot/foods/${ this.id() }/ingredients/${ ingredient.id }`, { name: ingredient['name'] }));
+      });
+
+    //removing ingredients.
+    const currentIngredientIds = this.food()?.ingredients.map(ing => ing.id) ?? [];
+    const updatingIngredientIds = foodData['ingredients'].filter((ingredient: any) => ingredient.id)
+      .map((ingredient: any) => +ingredient.id);
+    currentIngredientIds.filter(id => !updatingIngredientIds.includes(id))
+      .forEach(ingredientId => updateFood$.push(this.httpClient.delete(`/gotbot/foods/${ this.id() }/ingredients/${ ingredientId }`)));
+
+    forkJoin(updateFood$).pipe(
+      finalize(() => this.loadingStateService.end(['processing', 'save-food'])),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: () => {
+        this.modalRef?.hide();
+
+        return this.fetchFoodDetail();
+      },
+      error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
+    });
   }
 }
