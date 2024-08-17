@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { afterNextRender, Component, inject, input, signal } from '@angular/core';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs';
 
@@ -22,6 +23,10 @@ export class FoodDetailComponent extends HasObservablesDirective {
     super();
 
     afterNextRender(() => this.fetchFoodDetail());
+  }
+
+  public get formattedDate(): string {
+    return moment(this.food()?.updatedAt).format('MMMM Do YYYY, h:mm a');
   }
 
   private fetchFoodDetail(): void {
