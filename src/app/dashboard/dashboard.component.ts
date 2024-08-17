@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { SaveFoodComponent } from '@gotbot-chef/dashboard/save-food/save-food.component';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs';
 
@@ -14,12 +16,12 @@ import { takeUntil } from 'rxjs';
     RouterLink
   ],
   templateUrl: './dashboard.component.html',
-  styles: ''
 })
 export class DashboardComponent extends HasObservablesDirective {
   private readonly httpClient = inject(HttpClient);
   private readonly dialogService = inject(DialogService);
   private readonly toasterService = inject(ToastrService);
+  private readonly modalService = inject(BsModalService);
 
   public logout(): void {
     this.dialogService.open({
@@ -36,6 +38,12 @@ export class DashboardComponent extends HasObservablesDirective {
           action: () => this.makeLogoutRequest()
         }
       ]
+    });
+  }
+
+  public openSaveFoodDialog(): void {
+    this.modalService.show(SaveFoodComponent, {
+      class: 'modal-xl'
     });
   }
 
