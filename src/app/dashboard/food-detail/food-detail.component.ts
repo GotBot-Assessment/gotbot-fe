@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs';
     CurrencyPipe
   ],
   templateUrl: './food-detail.component.html',
-  styles: ['.btn-xs {padding: 5px !important;}']
+  styles: ''
 })
 export class FoodDetailComponent extends HasObservablesDirective {
   public readonly id = input.required<number>();
