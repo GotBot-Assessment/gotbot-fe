@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
+import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs';
 
 @Component({
@@ -18,6 +19,7 @@ import { takeUntil } from 'rxjs';
 export class DashboardComponent extends HasObservablesDirective {
   private readonly httpClient = inject(HttpClient);
   private readonly dialogService = inject(DialogService);
+  private readonly toasterService = inject(ToastrService);
 
   public logout(): void {
     this.dialogService.open({
@@ -40,13 +42,16 @@ export class DashboardComponent extends HasObservablesDirective {
   private makeLogoutRequest(): boolean {
     this.httpClient.get('/gotbot/auth/logout')
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        localStorage.clear();
-        sessionStorage.clear();
+      .subscribe({
+        next: () => {
+          localStorage.clear();
+          sessionStorage.clear();
 
-        return window.location.reload();
+          return window.location.reload();
+        },
+        error: (error) => this.toasterService.error(error.error?.message ?? error.message, 'Error')
       });
-
-    return true;
+    
+return true;
   }
 }
