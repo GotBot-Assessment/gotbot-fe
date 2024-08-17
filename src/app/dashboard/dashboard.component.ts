@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'gotbot-chef-dashboard',
@@ -28,12 +29,24 @@ export class DashboardComponent extends HasObservablesDirective {
           class: 'btn-light',
           action: () => true
         }, {
-          text: 'Yes',
+          text: 'Yes, logout!',
           class: 'btn-danger',
-          action: () => false
+          action: () => this.makeLogoutRequest()
         }
       ]
     });
-    console.log(this.httpClient, this.dialogService);
+  }
+
+  private makeLogoutRequest(): boolean {
+    this.httpClient.get('/gotbot/auth/logout')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+
+        return window.location.reload();
+      });
+
+    return true;
   }
 }
