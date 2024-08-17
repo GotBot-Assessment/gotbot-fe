@@ -45,6 +45,25 @@
                               placeholder="Description"
                               rows="5"
                               subLabel="More about this food (meal)"/>
+
+      <h5>Ingredients</h5>
+      <ng-container formArrayName="ingredients">
+        @for (ingredient of ingredients.controls; track ingredient.value; let i = $index) {
+          <div class="d-flex justify-content-between align-items-center gap-1 mb-3"
+               [formGroup]="ingredient | toFormGroup">
+            <gotbot-chef-form-input class="mb-3 flex-grow-1"
+                                    controlName="name"
+                                    label="Ingredient name"
+                                    placeholder="Ingredient name"/>
+            <button class="btn btn-outline-danger btn-sm rounded align-self-center"
+                    style="padding: 5px !important;"
+                    (click)="removeIngredient(i)">
+              x
+            </button>
+          </div>
+        }
+
+      </ng-container>
     </div>
   </div>
 
