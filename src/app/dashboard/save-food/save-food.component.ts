@@ -20,7 +20,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   templateUrl: './save-food.component.html'
 })
 export class SaveFoodComponent {
-  public isCreate = true;
   public readonly food = signal<FoodModel | undefined>(undefined);
   public onSaveFood = console.log;
   public readonly modalRef = inject(BsModalRef<SaveFoodComponent>);
@@ -30,7 +29,7 @@ export class SaveFoodComponent {
     area: new FormControl(null),
     price: new FormControl(null, Validators.required),
     description: new FormControl(null, Validators.required),
-    image: new FormControl<string | undefined>(undefined, this.isCreate ? Validators.required : []),
+    image: new FormControl<string | undefined>(undefined, Validators.required),
     ingredients: new FormArray([
       this.newIngredientForm()
     ], Validators.required)
