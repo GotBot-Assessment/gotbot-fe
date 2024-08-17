@@ -68,8 +68,13 @@ export class FoodDetailComponent extends HasObservablesDirective {
   public openSaveFoodDialog(): void {
     this.modalRef = this.modalService.show(SaveFoodComponent, {
       class: 'modal-xl',
-      initialState: { onSaveFood: foodData => this.updateFood(foodData) }
+      initialState: {
+        isCreate: false,
+        onSaveFood: foodData => this.updateFood(foodData)
+      }
     });
+
+    this.modalRef.content?.food.set(this.food()!);
   }
 
   private fetchFoodDetail(): void {
@@ -97,9 +102,7 @@ export class FoodDetailComponent extends HasObservablesDirective {
     return true;
   }
 
-  private updateFood(foodData: Record<string, any>): boolean {
+  private updateFood(foodData: Record<string, any>): void {
     console.log(foodData, this.modalRef);
-
-    return true;
   }
 }
