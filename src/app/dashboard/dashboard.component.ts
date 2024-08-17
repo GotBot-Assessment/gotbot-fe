@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SaveFoodComponent } from '@gotbot-chef/dashboard/save-food/save-food.component';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
-import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
 import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -56,7 +56,7 @@ export class DashboardComponent extends HasObservablesDirective {
   private saveFood(foodData: Record<string, any>): void {
     this.loadingStateService.start(['processing', 'save-food']);
 
-    this.httpClient.post<FoodModel>('/gotbot/foods', foodData)
+    this.httpClient.post<MealModel>('/gotbot/foods', foodData)
       .pipe(
         switchMap(food => {
           const formData = new FormData();

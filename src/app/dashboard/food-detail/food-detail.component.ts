@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { SaveFoodComponent } from '@gotbot-chef/dashboard/save-food/save-food.component';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
-import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
 import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
 import moment from 'moment';
@@ -25,7 +25,7 @@ import { finalize, forkJoin, takeUntil } from 'rxjs';
 })
 export class FoodDetailComponent extends HasObservablesDirective {
   public readonly id = input.required<number>();
-  public readonly food = signal<FoodModel | undefined>(undefined);
+  public readonly food = signal<MealModel | undefined>(undefined);
   public readonly formattedDate = computed(() => {
     if (this.food()?.createdAt) {
       return moment(this.food()?.createdAt).format('MMMM Do YYYY, h:mm a');
@@ -75,7 +75,7 @@ export class FoodDetailComponent extends HasObservablesDirective {
   }
 
   private fetchFoodDetail(): void {
-    this.httpClient.get<FoodModel>('/gotbot/foods/' + this.id())
+    this.httpClient.get<MealModel>('/gotbot/foods/' + this.id())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: food => this.food.set(food),

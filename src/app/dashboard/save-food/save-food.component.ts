@@ -3,7 +3,7 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { LoadingStateDirective } from '@gotbot-chef/shared/drirectives/loading-state.directive';
 import { scrollToError } from '@gotbot-chef/shared/helpers/scroll-helper';
 import { validateAllFormFields } from '@gotbot-chef/shared/helpers/validators';
-import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { ToFormGroupPipe } from '@gotbot-chef/shared/pipes/to-form-group.pipe';
 import { FormInputComponent } from '@gotbot-chef/shared/ui/form-input/form-input.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -20,7 +20,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   templateUrl: './save-food.component.html'
 })
 export class SaveFoodComponent {
-  public readonly food = signal<FoodModel | undefined>(undefined);
+  public readonly food = signal<MealModel | undefined>(undefined);
   public onSaveFood = console.log;
   public readonly modalRef = inject(BsModalRef<SaveFoodComponent>);
   public readonly foodForm = new FormGroup({
@@ -78,14 +78,14 @@ export class SaveFoodComponent {
     this.selectedFile.set(files[0]);
   }
 
-  private newIngredientForm(data?: Partial<FoodModel['ingredients'][0]>): FormGroup {
+  private newIngredientForm(data?: Partial<MealModel['ingredients'][0]>): FormGroup {
     return new FormGroup({
       id: new FormControl(data?.id),
       name: new FormControl(data?.name, Validators.required)
     });
   }
 
-  private preFillFoodForm(food?: FoodModel): void {
+  private preFillFoodForm(food?: MealModel): void {
     if (food) {
       delete food.image;
       //@ts-expect-error This is alright.

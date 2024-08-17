@@ -4,7 +4,7 @@ import { afterNextRender, Component, effect, inject, signal, viewChild } from '@
 import { RouterLink } from '@angular/router';
 import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-observables.directive';
 import { PaginatedResponse } from '@gotbot-chef/shared/models/api.response';
-import { FoodModel } from '@gotbot-chef/shared/models/food.model';
+import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { PageChangedEvent, PaginationComponent, PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs';
@@ -22,7 +22,7 @@ import { takeUntil } from 'rxjs';
 })
 export class ListFoodsComponent extends HasObservablesDirective {
   public readonly pagination = viewChild(PaginationComponent);
-  public readonly paginatedFoods = signal<PaginatedResponse<FoodModel> | undefined>(undefined);
+  public readonly paginatedFoods = signal<PaginatedResponse<MealModel> | undefined>(undefined);
   public readonly currentPage = signal(1);
   private readonly httpClient = inject(HttpClient);
   private readonly toastrService = inject(ToastrService);
@@ -45,7 +45,7 @@ export class ListFoodsComponent extends HasObservablesDirective {
   }
 
   private getMeals(): void {
-    this.httpClient.get<PaginatedResponse<FoodModel>>('/gotbot/foods', {
+    this.httpClient.get<PaginatedResponse<MealModel>>('/gotbot/foods', {
       params: { page: this.currentPage() }
     }).pipe(takeUntil(this.destroy$))
       .subscribe({
