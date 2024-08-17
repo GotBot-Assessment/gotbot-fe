@@ -20,6 +20,21 @@
                               placeholder="Meal category"
                               [selectOptions]="categories"
                               bindValue="name"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="area"
+                              type="text"
+                              label="Area"
+                              placeholder="Area of origin"
+                              subLabel="(optional) area of origin of this dish"/>
+
+      <gotbot-chef-form-input class="mb-3"
+                              controlName="image"
+                              type="file"
+                              label="Picture"
+                              placeholder="Picture of dish"
+                              acceptTypes="image/jpeg,image/gif,image/png"/>
+
     </div>
   </div>
 

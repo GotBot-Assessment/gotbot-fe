@@ -20,7 +20,7 @@ export class SaveFoodComponent {
     area: new FormControl(null),
     price: new FormControl(null, Validators.required),
     description: new FormControl(null, Validators.required),
-    file: new FormControl(null, Validators.required),
+    image: new FormControl(null, Validators.required),
     ingredients: new FormArray([], Validators.required)
   });
   public readonly categories = [
