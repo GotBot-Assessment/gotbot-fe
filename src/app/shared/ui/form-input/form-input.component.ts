@@ -25,7 +25,7 @@ import { ValidationErrorsService } from '@gotbot-chef/shared/services/validation
 import { InputType } from '@gotbot-chef/shared/ui/form-input/input-type.enum';
 import moment from 'moment';
 import { IDropdownSettings, NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerConfig, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { takeUntil } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -346,8 +346,6 @@ export class FormInputComponent extends HasObservablesDirective implements OnIni
       .subscribe(() => this.validationErrorsService.removeError(this.controlName()));
   }
 }
-
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 export const getCalenderConfig = (): Partial<BsDatepickerConfig> => ({
   isAnimated: true,

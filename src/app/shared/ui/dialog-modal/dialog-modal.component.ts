@@ -7,7 +7,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   standalone: true,
   imports: [],
   templateUrl: './dialog-modal.component.html',
-  styles: ``
 })
 export class DialogModalComponent {
   public title?: string;

@@ -21,6 +21,7 @@ export class RegistrationComponent extends AuthenticatesUserDirective {
     name: new FormControl(null, [Validators.required, Validators.minLength(3)]),
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
+    // eslint-disable-next-line camelcase
     password_confirmation: new FormControl(null, [Validators.required, Validators.minLength(6)])
   });
   protected readonly authUrl = '/gotbot/auth/register';

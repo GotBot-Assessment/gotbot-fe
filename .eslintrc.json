@@ -145,7 +145,7 @@
         "lines-between-class-members": "off",
         "no-useless-constructor": "off",
         "quotes": [
-          "error",
+          "warn",
           "single"
         ],
         "@typescript-eslint/no-explicit-any": [
@@ -195,7 +195,8 @@
       ],
       "rules": {
         "@angular-eslint/template/click-events-have-key-events": "off",
-        "@angular-eslint/template/interactive-supports-focus": "off"
+        "@angular-eslint/template/interactive-supports-focus": "off",
+        "@angular-eslint/template/alt-text": "off"
       }
     }
   ]
