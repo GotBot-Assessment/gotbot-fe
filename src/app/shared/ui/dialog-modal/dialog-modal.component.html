@@ -1,5 +1,5 @@
 <div class="modal-content">
-  <div class="modal-header">
+  <div class="modal-headers">
     <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.hide()"></button>
   </div>
   @if(title) {
@@ -28,7 +28,7 @@
     </div>
   }
   @if(showFooter) {
-    <div class="modal-footer">
+    <div class="modal-footers">
       @if(actions && actions.length) {
         @for(action of actions; track action) {
           <button type="button"

@@ -19,10 +19,20 @@ export class DashboardComponent extends HasObservablesDirective {
   private readonly dialogService = inject(DialogService);
 
   public logout(): void {
-    console.log('logout');
     this.dialogService.open({
       message: 'You want to log out?',
-      title: 'Are you sure?'
+      title: 'Are you sure?',
+      actions: [
+        {
+          text: 'Cancel',
+          class: 'btn-light',
+          action: () => true
+        }, {
+          text: 'Yes',
+          class: 'btn-danger',
+          action: () => false
+        }
+      ]
     });
     console.log(this.httpClient, this.dialogService);
   }
