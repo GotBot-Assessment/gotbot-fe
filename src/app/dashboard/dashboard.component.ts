@@ -6,6 +6,7 @@ import { HasObservablesDirective } from '@gotbot-chef/shared/drirectives/has-obs
 import { MealModel } from '@gotbot-chef/shared/models/meal.model';
 import { DialogService } from '@gotbot-chef/shared/services/ui/dialog.service';
 import { LoadingStateService } from '@gotbot-chef/shared/services/ui/loading-state.service';
+import { UserProfileService } from '@gotbot-chef/shared/services/user-profile.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, forkJoin, switchMap, takeUntil } from 'rxjs';
@@ -20,6 +21,7 @@ import { finalize, forkJoin, switchMap, takeUntil } from 'rxjs';
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent extends HasObservablesDirective {
+  public readonly userProfile = inject(UserProfileService).getUser();
   private readonly httpClient = inject(HttpClient);
   private readonly dialogService = inject(DialogService);
   private readonly toasterService = inject(ToastrService);

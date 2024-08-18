@@ -2,7 +2,7 @@
        id="sidenav-main">
   <div class="sidenav-header">
     <a class="navbar-brand m-0" href="javascript:void(0);">
-      <span class="font-weight-bold">GOTBOT CHEF DASHBOARD</span>
+      <span class="font-weight-bold">GOTBOT KOTA DASHBOARD</span>
     </a>
   </div>
   <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
@@ -44,7 +44,7 @@
         </div>
         <div class="docs-info">
           <p class="text-xs font-weight-bold">Menu Manager</p>
-          <a href="javascript:void(0);" class="btn btn-white btn-sm w-100 mb-0">GotBot Chef</a>
+          <a href="javascript:void(0);" class="btn btn-white btn-sm w-100 mb-0">GotBot Kotas</a>
         </div>
       </div>
     </div>
@@ -56,6 +56,8 @@
     <a class="btn btn-outline-primary btn-sm mb-0"
        (click)="openSaveMealDialog()"
        href="javascript:;">Add Meal</a>
+    <a class="ps-3 btn-sm mb-0"
+       href="javascript:;">Hi {{ userProfile?.name }}</a>
   </nav>
   <div class="container-fluid py-4">
     <router-outlet/>
