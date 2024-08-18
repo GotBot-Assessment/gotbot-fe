@@ -20,6 +20,8 @@ export class UserProfileService {
   }
 
   public getUser(): UserModel | undefined {
-    return this.storageService.getItem<UserModel>('gotbot-chef-userx');
+    return JSON.parse(this.encryptionService.decrypt(
+      this.storageService.getItem('gotbot-chef-userx')!
+    ));
   }
 }
